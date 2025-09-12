@@ -7,9 +7,17 @@
     <title>ByteBazaar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --color-pink: #e09393;
+            --color-peach: #fcebe8;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
+            background-color: var(--color-peach);
+            color: #4b5563; /* Gray-600 */
         }
 
         /* Custom scrollbar for better aesthetics */
@@ -31,138 +39,142 @@
             background: #64748b;
         }
 
-        /* Keyframes for the product slide-in animation */
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .product-card-animation {
-            animation: slideInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-        }
-
-        /* Keyframes for cart item addition */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in-down {
-            animation: fadeInDown 0.3s ease-out;
-        }
-
-        /* Keyframes for the title glow animation */
-        @keyframes titleGlow {
+        /* Keyframes for the buy button glow animation */
+        @keyframes buyButtonGlow {
             0%, 100% {
-                text-shadow: 0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3);
+                box-shadow: 0 0 8px rgba(252, 235, 232, 0.6), 0 0 16px rgba(252, 235, 232, 0.4);
             }
             50% {
-                text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.5);
+                box-shadow: 0 0 16px rgba(252, 235, 232, 0.8), 0 0 24px rgba(252, 235, 232, 0.6);
             }
         }
-        
-        .title-glow-animation {
-            animation: titleGlow 2s infinite alternate;
+        .buy-button-glow {
+            animation: buyButtonGlow 2s infinite alternate;
         }
 
-        /* Styles for the new animated background */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* Style for the main container to match the soft, rounded design */
+        .main-container {
+            background-color: #ffffff;
+            border-radius: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            max-width: 1200px;
+        }
+        
+        .hero-title {
+            color: var(--color-pink);
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: #9ca3af; /* Gray-400 */
+        }
+        
+        .circular-container {
+            position: relative;
             width: 100%;
-            height: 100%;
-            z-index: -1;
-            background-color: #f7fafc; /* Fallback color */
+            height: 0;
+            padding-bottom: 100%;
         }
 
-        /* Keyframes for the main content background animation */
-        @keyframes contentBgShift {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        /* The class for the new animated background */
-        .animated-bg {
-            background: linear-gradient(135deg, #ffffff, #f0f4f8, #ffffff);
-            background-size: 200% 200%;
-            animation: contentBgShift 12s ease infinite;
-        }
-        
-        /* New styling for the 'new' badge */
-        .new-badge {
+        .circular-container img {
             position: absolute;
-            top: 8px;
-            right: 8px;
-            background-color: #ef4444; /* red-500 */
-            color: white;
-            padding: 2px 8px;
-            border-radius: 9999px; /* rounded-full */
-            font-size: 0.75rem;
-            font-weight: 600;
-            transform: rotate(10deg);
-            z-index: 10;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
         }
 
-        /* New styling for the remove button in the cart */
-        .remove-btn {
-            padding: 4px 8px;
-            background-color: #fecaca; /* red-200 */
-            color: #b91c1c; /* red-700 */
+        .floating-bubble {
+            background-color: white;
+            padding: 0.5rem 1rem;
             border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-        }
-
-        .remove-btn:hover {
-            background-color: #f87171; /* red-400 */
-            color: #ffffff;
-            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            position: absolute;
+            white-space: nowrap;
+            font-size: 0.875rem;
+            color: #4b5563;
         }
     </style>
 </head>
 
-<body class="p-4 sm:p-8 relative">
-    <canvas id="bg-canvas"></canvas>
+<body class="p-4 flex justify-center items-center min-h-screen">
 
-    <div class="max-w-7xl mx-auto rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-200 relative z-10 animated-bg">
-        <header class="text-center mb-10">
-            <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight title-glow-animation">
-                ByteBazaar 💻
-            </h1>
-            <p class="mt-2 text-lg text-gray-600">
-                Bringing the future to your doorstep.
-            </p>
+    <div class="w-full main-container p-6 sm:p-12 relative z-10">
+
+        <!-- Header -->
+        <header class="flex flex-col sm:flex-row justify-between items-center mb-16">
+            <div class="flex items-center space-x-2 mb-4 sm:mb-0">
+                <i class="fa-solid fa-house text-2xl" style="color: var(--color-pink);"></i>
+                <span class="text-xl font-bold" style="color: var(--color-pink);">ByteBazaar</span>
+            </div>
+            <nav class="flex-grow flex justify-center space-x-6 text-gray-500 font-medium hidden md:flex">
+                <a href="#" class="hover:text-gray-900 transition-colors">Home</a>
+                <a href="#" class="hover:text-gray-900 transition-colors">Product</a>
+                <a href="#" class="hover:text-gray-900 transition-colors">About</a>
+                <a href="#" class="hover:text-gray-900 transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden sm:block">
+                    <input type="text" placeholder="Type here" class="pl-4 pr-10 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-all text-sm">
+                    <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <a href="#" class="p-3 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition-colors"><i class="fa-solid fa-user"></i></a>
+            </div>
         </header>
 
+        <!-- Main Hero Section -->
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-24 items-center">
+            <!-- Left side: Text & Buy button -->
+            <div class="order-2 md:order-1 text-center md:text-left">
+                <h1 class="hero-title mb-2">e-commerce<br>Website</h1>
+                <p class="hero-subtitle mb-8">SUPPORT LOCAL EVERYTHING</p>
+                <div class="flex items-center justify-center md:justify-start mb-6 space-x-4">
+                    <label for="product-quantity" class="text-gray-500">Choose your</label>
+                    <div class="relative w-24">
+                        <input type="number" id="product-quantity" value="1" min="1" class="w-full text-center py-2 px-3 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-400">
+                    </div>
+                </div>
+                <button id="buy-now-btn" class="bg-gradient-to-r from-gray-200 to-gray-300 text-gray-800 font-semibold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 buy-button-glow">
+                    <i class="fa-solid fa-basket-shopping mr-2"></i> Buy Now
+                </button>
+            </div>
+
+            <!-- Right side: Product showcase -->
+            <div class="order-1 md:order-2 relative w-full aspect-square md:aspect-auto">
+                <!-- Main circular product container -->
+                <div class="relative w-full aspect-square rounded-full flex items-center justify-center" style="background-color: var(--color-peach);">
+                    <img id="main-product-image" src="https://images.unsplash.com/photo-1549497554-e696f8c42621?w=400&q=80" alt="Minimalist Black Chair" class="w-2/3 h-2/3 object-contain">
+                </div>
+
+                <!-- Floating Bubbles -->
+                <div class="floating-bubble top-[10%] left-[60%] sm:top-[15%] sm:left-[70%]">Minimalistic</div>
+                <div class="floating-bubble bottom-[20%] left-[10%] sm:bottom-[25%] sm:left-[5%]">¡Super cozy!</div>
+                
+                <!-- Small floating images -->
+                <div class="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden top-[2%] right-[5%] sm:top-[10%] sm:right-[-2%] border-4 border-white shadow-md">
+                    <img src="https://images.unsplash.com/photo-1579737118492-f32f3f721517?w=400&q=80" alt="Kitchen" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden top-[25%] right-[-10%] sm:top-[40%] sm:right-[-15%] border-4 border-white shadow-md">
+                    <img src="https://images.unsplash.com/photo-1522770179533-28a613d56708?w=400&q=80" alt="Bedroom" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </main>
+        
+        <hr class="my-16 border-gray-200" />
+        
+        <!-- Product list and Cart section (adapted from previous version) -->
         <main class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            <!-- Product List Section -->
             <section class="md:col-span-2">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-semibold text-gray-800">Our Products 🛍️</h2>
                     <div class="flex items-center space-x-2">
                         <label for="sort-by" class="text-gray-600">Sort by:</label>
-                        <select id="sort-by" class="rounded-md border border-gray-300 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <select id="sort-by" class="rounded-md border border-gray-300 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400">
                             <option value="default">Default</option>
                             <option value="price-low-high">Price: Low to High</option>
                             <option value="price-high-low">Price: High to Low</option>
@@ -170,11 +182,14 @@
                     </div>
                 </div>
                 <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    </div>
+                    <!-- Products will be dynamically added here -->
+                </div>
             </section>
 
+            <!-- Shopping Cart Section -->
             <aside class="md:col-span-1 bg-gray-50 rounded-2xl shadow-inner p-6 flex flex-col h-full border border-gray-200">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-6">Shopping Cart 🛒</h2>
+                <!-- Cart items container with a fixed height and scrollbar for many items -->
                 <div id="cart-items" class="space-y-4 mb-6 flex-grow overflow-y-auto cart-scrollbar pr-2">
                     <p id="empty-cart-message" class="text-gray-500 italic text-center py-4">Your cart is empty.</p>
                 </div>
@@ -185,13 +200,14 @@
                     </div>
                 </div>
                 <button id="checkout-button"
-                    class="mt-6 w-full py-4 px-6 bg-blue-600 text-white font-bold rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    class="mt-6 w-full py-4 px-6 bg-gray-800 text-white font-bold rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
                     Checkout ✅
                 </button>
             </aside>
         </main>
     </div>
 
+    <!-- Message Box for alerts -->
     <div id="message-box" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center p-4 z-50">
         <div class="bg-white rounded-xl shadow-xl p-6 sm:p-8 w-full max-w-sm transform transition-transform duration-300 scale-95 opacity-0">
             <div class="flex justify-between items-start mb-4">
@@ -200,25 +216,25 @@
             </div>
             <p id="message-content" class="text-gray-600 mb-6"></p>
             <button id="ok-message-box"
-                class="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-300">
+                class="w-full py-3 px-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300">
                 OK
             </button>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="mt-8 text-center text-gray-500 text-sm">
-        <p>A demo project by Gemini.</p>
+        <p>Designed by Apeksha Singh Chauhan</p>
     </footer>
 
     <script>
-        // Use real, high-quality images from Unsplash to make the store more visually appealing.
         const products = [
-            { id: 1, name: "Stylish Backpack", price: 59.99, imageUrl: "https://images.unsplash.com/photo-1550340440-a42e5b8d60c2?q=80&w=300", isNew: false },
-            { id: 2, name: "Wireless Headphones", price: 89.90, imageUrl: "https://images.unsplash.com/photo-1546435770-ed6042971295?q=80&w=300", isNew: false },
-            { id: 3, name: "Smartwatch", price: 199.99, imageUrl: "https://images.unsplash.com/photo-1579586337278-f3b1456f059c?q=80&w=300", isNew: true },
-            { id: 4, name: "Portable Speaker", price: 45.00, imageUrl: "https://images.unsplash.com/photo-1588665793010-0610362f6b15?q=80&w=300", isNew: false },
-            { id: 5, name: "Coffee Maker", price: 75.00, imageUrl: "https://images.unsplash.com/photo-1579975775798-25035293d043?q=80&w=300", isNew: false },
-            { id: 6, name: "Ergonomic Mouse", price: 25.00, imageUrl: "https://images.unsplash.com/photo-1628126781297-76189b88b0a9?q=80&w=300", isNew: false }
+            { id: 1, name: "Minimalist Armchair", price: 159.99, imageUrl: "https://images.unsplash.com/photo-1616047021960-932d84950e41?q=80&w=400" },
+            { id: 2, name: "Wooden Side Table", price: 89.50, imageUrl: "https://images.unsplash.com/photo-1541571477755-a1c6a213e481?q=80&w=400" },
+            { id: 3, name: "Geometric Bookcase", price: 249.99, imageUrl: "https://images.unsplash.com/photo-1601614271816-52c786a41f89?q=80&w=400" },
+            { id: 4, name: "Floor Lamp", price: 75.00, imageUrl: "https://images.unsplash.com/photo-1598282386121-50798e21de53?q=80&w=400" },
+            { id: 5, name: "Potted Fiddle Leaf Fig", price: 55.00, imageUrl: "https://images.unsplash.com/photo-1601985474929-e8838084ac9b?q=80&w=400" },
+            { id: 6, name: "Ceramic Vases Set", price: 35.00, imageUrl: "https://images.unsplash.com/photo-1582210871926-787e7428f654?q=80&w=400" }
         ];
 
         let cart = [];
@@ -235,6 +251,8 @@
         const closeMessageBoxButton = document.getElementById('close-message-box');
         const okMessageBoxButton = document.getElementById('ok-message-box');
         const sortByEl = document.getElementById('sort-by');
+        const buyNowBtn = document.getElementById('buy-now-btn');
+        const productQuantityInput = document.getElementById('product-quantity');
 
         // Function to show a custom message box instead of alert()
         function showMessage(title, message) {
@@ -259,33 +277,25 @@
             setTimeout(() => {
                 messageBoxEl.classList.remove('flex');
                 messageBoxEl.classList.add('hidden');
-            }, 300); // Wait for the transition to finish
+            }, 300);
         }
 
-        // Close message box event listeners
         closeMessageBoxButton.addEventListener('click', hideMessageBox);
         okMessageBoxButton.addEventListener('click', hideMessageBox);
 
-        // Renders all products on the page
         function renderProducts(productsToRender = products) {
-            productListEl.innerHTML = ''; // Clear previous products
-            productsToRender.forEach((product, index) => {
+            productListEl.innerHTML = '';
+            productsToRender.forEach(product => {
                 const productCard = document.createElement('div');
-                // Apply a delay to the animation of each product card
-                productCard.style.animationDelay = `${index * 0.1}s`;
-                productCard.className = 'bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl product-card-animation relative';
-
-                // Add "New!" badge if the product is new
-                const newBadge = product.isNew ? `<span class="new-badge">New! ✨</span>` : '';
+                productCard.className = 'bg-gray-100 rounded-xl shadow-inner overflow-hidden transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg relative border border-gray-200';
 
                 productCard.innerHTML = `
-                    ${newBadge}
-                    <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x300/a78bfa/ffffff?text=Image+Not+Found';">
+                    <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover rounded-t-xl" onerror="this.onerror=null;this.src='https://placehold.co/400x300/e09393/ffffff?text=Image+Not+Found';">
                     <div class="p-4">
                         <h3 class="font-semibold text-lg text-gray-800 mb-1">${product.name}</h3>
-                        <p class="text-blue-600 font-bold text-xl">₹${product.price.toFixed(2)}</p>
+                        <p class="text-pink-600 font-bold text-xl" style="color: var(--color-pink);">₹${product.price.toFixed(2)}</p>
                         <button data-id="${product.id}"
-                            class="mt-4 w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-300 add-to-cart-btn">
+                            class="mt-4 w-full py-2 px-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300 add-to-cart-btn">
                             Add to Cart ➕
                         </button>
                     </div>
@@ -294,7 +304,6 @@
             });
         }
 
-        // Renders the cart items and updates the total
         function renderCart() {
             cartItemsEl.innerHTML = '';
             if (cart.length === 0) {
@@ -324,30 +333,32 @@
             updateTotal();
         }
 
-        // Updates the total price
         function updateTotal() {
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             cartTotalEl.textContent = `₹${total.toFixed(2)}`;
         }
 
-        // Handles adding a product to the cart
+        function addToCart(productId, quantity) {
+            const productToAdd = products.find(p => p.id === productId);
+            if (!productToAdd) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({ ...productToAdd, quantity });
+            }
+            renderCart();
+            showMessage('Item(s) Added ℹ️', `${quantity} x ${productToAdd.name} added to cart.`);
+        }
+
         productListEl.addEventListener('click', (event) => {
             if (event.target.classList.contains('add-to-cart-btn')) {
                 const productId = parseInt(event.target.dataset.id);
-                const productToAdd = products.find(p => p.id === productId);
-
-                const existingItem = cart.find(item => item.id === productId);
-                if (existingItem) {
-                    existingItem.quantity++;
-                } else {
-                    cart.push({ ...productToAdd, quantity: 1 });
-                }
-                renderCart();
-                showMessage('Item Added ℹ️', `${productToAdd.name} has been added to your cart.`);
+                addToCart(productId, 1);
             }
         });
 
-        // Handles removing a product from the cart
         cartItemsEl.addEventListener('click', (event) => {
             if (event.target.classList.contains('remove-btn')) {
                 const productId = parseInt(event.target.dataset.id);
@@ -366,19 +377,21 @@
             }
         });
 
-        // Handles the checkout button click
+        buyNowBtn.addEventListener('click', () => {
+            const quantity = parseInt(productQuantityInput.value) || 1;
+            addToCart(1, quantity); // Add the featured product (id 1)
+        });
+
         checkoutButtonEl.addEventListener('click', () => {
             if (cart.length > 0) {
                 showMessage('Checkout Successful 🎉', 'Your order has been placed successfully!');
-                // Clear the cart after successful checkout
                 cart = [];
                 renderCart();
             }
         });
 
-        // Function to sort products based on the selected option
         function sortProducts(sortType) {
-            const sortedProducts = [...products]; // Create a shallow copy to avoid mutating the original array
+            const sortedProducts = [...products];
             if (sortType === 'price-low-high') {
                 sortedProducts.sort((a, b) => a.price - b.price);
             } else if (sortType === 'price-high-low') {
@@ -387,7 +400,6 @@
             renderProducts(sortedProducts);
         }
         
-        // Add event listener for the sort dropdown
         sortByEl.addEventListener('change', (event) => {
             sortProducts(event.target.value);
         });
@@ -395,146 +407,7 @@
         // Initial render of products and cart on page load
         renderProducts();
         renderCart();
-
-
-        // --- Animated background particles logic ---
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let mouse = { x: null, y: null, radius: 150 };
-
-        // Set up the canvas dimensions on resize
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        // Particle class definition
-        class Particle {
-            constructor(x, y, directionX, directionY, size, color) {
-                this.x = x;
-                this.y = y;
-                this.directionX = directionX;
-                this.directionY = directionY;
-                this.size = size;
-                this.color = color;
-            }
-
-            // Method to draw the particle
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
-
-            // Method to update particle position and interact with mouse
-            update() {
-                // Bounce particles off the canvas edges
-                if (this.x + this.size > canvas.width || this.x - this.size < 0) {
-                    this.directionX = -this.directionX;
-                }
-                if (this.y + this.size > canvas.height || this.y - this.size < 0) {
-                    this.directionY = -this.directionY;
-                }
-
-                this.x += this.directionX;
-                this.y += this.directionY;
-
-                // Mouse interaction
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < mouse.radius + this.size) {
-                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
-                        this.x += 10;
-                    }
-                    if (mouse.x > this.x && this.x > this.size * 10) {
-                        this.x -= 10;
-                    }
-                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
-                        this.y += 10;
-                    }
-                    if (mouse.y > this.y && this.y > this.size * 10) {
-                        this.y -= 10;
-                    }
-                }
-
-                // Redraw particle
-                this.draw();
-            }
-        }
-
-        // Function to connect particles with lines
-        function connectParticles() {
-            let opacityValue = 1;
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
-                    let distance = ((particles[a].x - particles[b].x) * (particles[a].x - particles[b].x)) +
-                                   ((particles[a].y - particles[b].y) * (particles[a].y - particles[b].y));
-                    if (distance < (canvas.width / 7) * (canvas.height / 7)) {
-                        opacityValue = 1 - (distance / 20000);
-                        ctx.strokeStyle = `rgba(147, 197, 253, ${opacityValue})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[a].x, particles[a].y);
-                        ctx.lineTo(particles[b].x, particles[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        // Animation loop
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-            }
-            connectParticles();
-        }
-
-        // Initialize particles
-        function initParticles() {
-            particles = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 9000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                let size = (Math.random() * 5) + 1;
-                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                let directionX = (Math.random() * 0.5) - 0.25;
-                let directionY = (Math.random() * 0.5) - 0.25;
-                let color = '#93c5fd';
-                particles.push(new Particle(x, y, directionX, directionY, size, color));
-            }
-        }
-
-        // Event listeners for interactivity and responsiveness
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            initParticles();
-        });
-
-        window.addEventListener('mousemove', (event) => {
-            mouse.x = event.x;
-            mouse.y = event.y;
-        });
-
-        window.addEventListener('mouseout', () => {
-            mouse.x = undefined;
-            mouse.y = undefined;
-        });
-
-        // Start the animation on window load
-        window.onload = function () {
-            resizeCanvas();
-            initParticles();
-            animate();
-        };
     </script>
 </body>
-
 </html>
+
