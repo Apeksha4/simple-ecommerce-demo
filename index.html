@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -101,140 +101,144 @@
     </style>
 </head>
 
-<body class="p-4 flex justify-center items-center min-h-screen">
+<body class="min-h-screen flex flex-col">
 
-    <div class="w-full main-container p-6 sm:p-12 relative z-10">
+    <!-- Main content wrapper to handle spacing and centering -->
+    <div class="flex-grow flex justify-center items-center p-4">
+        <!-- Main content container -->
+        <div class="w-full main-container p-6 sm:p-12 relative z-10">
 
-        <!-- Header -->
-        <header class="flex flex-col sm:flex-row justify-between items-center mb-16">
-            <div class="flex items-center space-x-2 mb-4 sm:mb-0">
-                <i class="fa-solid fa-house text-2xl" style="color: var(--color-pink);"></i>
-                <span class="text-xl font-bold" style="color: var(--color-pink);">ByteBazaar</span>
-            </div>
-            <nav class="flex-grow flex justify-center space-x-6 text-gray-500 font-medium hidden md:flex">
-                <a href="#" class="hover:text-gray-900 transition-colors">Home</a>
-                <a href="#" class="hover:text-gray-900 transition-colors">Product</a>
-                <a href="#" class="hover:text-gray-900 transition-colors">About</a>
-                <a href="#" class="hover:text-gray-900 transition-colors">Contact</a>
-            </nav>
-            <div class="flex items-center space-x-4">
-                <div class="relative hidden sm:block">
-                    <input type="text" placeholder="Type here" class="pl-4 pr-10 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-all text-sm">
-                    <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <!-- Header -->
+            <header class="flex flex-col sm:flex-row justify-between items-center mb-16">
+                <div class="flex items-center space-x-2 mb-4 sm:mb-0">
+                    <i class="fa-solid fa-house text-2xl" style="color: var(--color-pink);"></i>
+                    <span class="text-xl font-bold" style="color: var(--color-pink);">ByteBazaar</span>
                 </div>
-                <a href="#" class="p-3 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition-colors"><i class="fa-solid fa-user"></i></a>
-            </div>
-        </header>
+                <nav class="flex-grow flex justify-center space-x-6 text-gray-500 font-medium hidden md:flex">
+                    <a href="#" class="hover:text-gray-900 transition-colors">Home</a>
+                    <a href="#" class="hover:text-gray-900 transition-colors">Product</a>
+                    <a href="#" class="hover:text-gray-900 transition-colors">About</a>
+                    <a href="#" class="hover:text-gray-900 transition-colors">Contact</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <div class="relative hidden sm:block">
+                        <input type="text" placeholder="Type here" class="pl-4 pr-10 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-all text-sm">
+                        <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <a href="#" class="p-3 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition-colors"><i class="fa-solid fa-user"></i></a>
+                </div>
+            </header>
 
-        <!-- Main Hero Section -->
-        <main class="grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-24 items-center">
-            <!-- Left side: Text & Buy button -->
-            <div class="order-2 md:order-1 text-center md:text-left">
-                <h1 class="hero-title mb-2">e-commerce<br>Website</h1>
-                <p class="hero-subtitle mb-8">SUPPORT LOCAL EVERYTHING</p>
-                <div class="flex items-center justify-center md:justify-start mb-6 space-x-4">
-                    <label for="product-quantity" class="text-gray-500">Choose your</label>
-                    <div class="relative w-24">
-                        <input type="number" id="product-quantity" value="1" min="1" class="w-full text-center py-2 px-3 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-400">
+            <!-- Main Hero Section -->
+            <main class="grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-24 items-center">
+                <!-- Left side: Text & Buy button -->
+                <div class="order-2 md:order-1 text-center md:text-left">
+                    <h1 class="hero-title mb-2">e-commerce<br>Website</h1>
+                    <p class="hero-subtitle mb-8">SUPPORT LOCAL EVERYTHING</p>
+                    <div class="flex items-center justify-center md:justify-start mb-6 space-x-4">
+                        <label for="product-quantity" class="text-gray-500">Choose your</label>
+                        <div class="relative w-24">
+                            <input type="number" id="product-quantity" value="1" min="1" class="w-full text-center py-2 px-3 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-400">
+                        </div>
+                    </div>
+                    <button id="buy-now-btn" class="bg-gradient-to-r from-gray-200 to-gray-300 text-gray-800 font-semibold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 buy-button-glow">
+                        <i class="fa-solid fa-basket-shopping mr-2"></i> Buy Now
+                    </button>
+                </div>
+
+                <!-- Right side: Product showcase -->
+                <div class="order-1 md:order-2 relative w-full aspect-square md:aspect-auto">
+                    <!-- Main circular product container -->
+                    <div class="relative w-full aspect-square rounded-full flex items-center justify-center" style="background-color: var(--color-peach);">
+                        <img id="main-product-image" src="https://images.unsplash.com/photo-1626084024523-2895f36e8971?q=80&w=400" alt="Minimalist speaker" class="w-2/3 h-2/3 object-contain">
+                    </div>
+
+                    <!-- Floating Bubbles -->
+                    <div class="floating-bubble top-[10%] left-[60%] sm:top-[15%] sm:left-[70%]">Minimalist</div>
+                    <div class="floating-bubble bottom-[20%] left-[10%] sm:bottom-[25%] sm:left-[5%]">Modern design</div>
+                    
+                    <!-- Small floating images -->
+                    <div class="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden top-[2%] right-[5%] sm:top-[10%] sm:right-[-2%] border-4 border-white shadow-md">
+                        <img src="https://images.unsplash.com/photo-1583850162590-7d12f37c35e7?q=80&w=400" alt="Tech setup" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden top-[25%] right-[-10%] sm:top-[40%] sm:right-[-15%] border-4 border-white shadow-md">
+                        <img src="https://images.unsplash.com/photo-1520336688582-8959f2a96a1a?q=80&w=400" alt="Person wearing headphones" class="w-full h-full object-cover">
                     </div>
                 </div>
-                <button id="buy-now-btn" class="bg-gradient-to-r from-gray-200 to-gray-300 text-gray-800 font-semibold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 buy-button-glow">
-                    <i class="fa-solid fa-basket-shopping mr-2"></i> Buy Now
+            </main>
+            
+            <hr class="my-16 border-gray-200" />
+            
+            <!-- Product list and Cart section (adapted from previous version) -->
+            <main class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                <!-- Product List Section -->
+                <section class="md:col-span-2">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-semibold text-gray-800">Our Products 🛍️</h2>
+                        <div class="flex items-center space-x-2">
+                            <label for="sort-by" class="text-gray-600">Sort by:</label>
+                            <select id="sort-by" class="rounded-md border border-gray-300 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400">
+                                <option value="default">Default</option>
+                                <option value="price-low-high">Price: Low to High</option>
+                                <option value="price-high-low">Price: High to Low</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Products will be dynamically added here -->
+                    </div>
+                </section>
+
+                <!-- Shopping Cart Section -->
+                <aside class="md:col-span-1 bg-gray-50 rounded-2xl shadow-inner p-6 flex flex-col h-full border border-gray-200">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Shopping Cart 🛒</h2>
+                    <!-- Cart items container with a fixed height and scrollbar for many items -->
+                    <div id="cart-items" class="space-y-4 mb-6 flex-grow overflow-y-auto cart-scrollbar pr-2">
+                        <p id="empty-cart-message" class="text-gray-500 italic text-center py-4">Your cart is empty.</p>
+                    </div>
+                    <div class="border-t pt-4 mt-auto border-gray-300">
+                        <div class="flex justify-between items-center font-bold text-xl text-gray-800">
+                            <span>Total:</span>
+                            <span id="cart-total">₹0.00</span>
+                        </div>
+                    </div>
+                    <button id="checkout-button"
+                        class="mt-6 w-full py-4 px-6 bg-gray-800 text-white font-bold rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                        Checkout ✅
+                    </button>
+                </aside>
+            </main>
+        </div>
+
+        <!-- Message Box for alerts -->
+        <div id="message-box" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-xl shadow-xl p-6 sm:p-8 w-full max-w-sm transform transition-transform duration-300 scale-95 opacity-0">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 id="message-title" class="text-xl font-bold text-gray-800"></h3>
+                    <button id="close-message-box" class="text-gray-400 hover:text-gray-600 font-bold text-2xl">&times;</button>
+                </div>
+                <p id="message-content" class="text-gray-600 mb-6"></p>
+                <button id="ok-message-box"
+                    class="w-full py-3 px-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300">
+                    OK
                 </button>
             </div>
-
-            <!-- Right side: Product showcase -->
-            <div class="order-1 md:order-2 relative w-full aspect-square md:aspect-auto">
-                <!-- Main circular product container -->
-                <div class="relative w-full aspect-square rounded-full flex items-center justify-center" style="background-color: var(--color-peach);">
-                    <img id="main-product-image" src="https://images.unsplash.com/photo-1549497554-e696f8c42621?w=400&q=80" alt="Minimalist Black Chair" class="w-2/3 h-2/3 object-contain">
-                </div>
-
-                <!-- Floating Bubbles -->
-                <div class="floating-bubble top-[10%] left-[60%] sm:top-[15%] sm:left-[70%]">Minimalistic</div>
-                <div class="floating-bubble bottom-[20%] left-[10%] sm:bottom-[25%] sm:left-[5%]">¡Super cozy!</div>
-                
-                <!-- Small floating images -->
-                <div class="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden top-[2%] right-[5%] sm:top-[10%] sm:right-[-2%] border-4 border-white shadow-md">
-                    <img src="https://images.unsplash.com/photo-1579737118492-f32f3f721517?w=400&q=80" alt="Kitchen" class="w-full h-full object-cover">
-                </div>
-                <div class="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden top-[25%] right-[-10%] sm:top-[40%] sm:right-[-15%] border-4 border-white shadow-md">
-                    <img src="https://images.unsplash.com/photo-1522770179533-28a613d56708?w=400&q=80" alt="Bedroom" class="w-full h-full object-cover">
-                </div>
-            </div>
-        </main>
-        
-        <hr class="my-16 border-gray-200" />
-        
-        <!-- Product list and Cart section (adapted from previous version) -->
-        <main class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            <!-- Product List Section -->
-            <section class="md:col-span-2">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-semibold text-gray-800">Our Products 🛍️</h2>
-                    <div class="flex items-center space-x-2">
-                        <label for="sort-by" class="text-gray-600">Sort by:</label>
-                        <select id="sort-by" class="rounded-md border border-gray-300 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400">
-                            <option value="default">Default</option>
-                            <option value="price-low-high">Price: Low to High</option>
-                            <option value="price-high-low">Price: High to Low</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Products will be dynamically added here -->
-                </div>
-            </section>
-
-            <!-- Shopping Cart Section -->
-            <aside class="md:col-span-1 bg-gray-50 rounded-2xl shadow-inner p-6 flex flex-col h-full border border-gray-200">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Shopping Cart 🛒</h2>
-                <!-- Cart items container with a fixed height and scrollbar for many items -->
-                <div id="cart-items" class="space-y-4 mb-6 flex-grow overflow-y-auto cart-scrollbar pr-2">
-                    <p id="empty-cart-message" class="text-gray-500 italic text-center py-4">Your cart is empty.</p>
-                </div>
-                <div class="border-t pt-4 mt-auto border-gray-300">
-                    <div class="flex justify-between items-center font-bold text-xl text-gray-800">
-                        <span>Total:</span>
-                        <span id="cart-total">₹0.00</span>
-                    </div>
-                </div>
-                <button id="checkout-button"
-                    class="mt-6 w-full py-4 px-6 bg-gray-800 text-white font-bold rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                    Checkout ✅
-                </button>
-            </aside>
-        </main>
-    </div>
-
-    <!-- Message Box for alerts -->
-    <div id="message-box" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-xl shadow-xl p-6 sm:p-8 w-full max-w-sm transform transition-transform duration-300 scale-95 opacity-0">
-            <div class="flex justify-between items-start mb-4">
-                <h3 id="message-title" class="text-xl font-bold text-gray-800"></h3>
-                <button id="close-message-box" class="text-gray-400 hover:text-gray-600 font-bold text-2xl">&times;</button>
-            </div>
-            <p id="message-content" class="text-gray-600 mb-6"></p>
-            <button id="ok-message-box"
-                class="w-full py-3 px-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300">
-                OK
-            </button>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="mt-8 text-center text-gray-500 text-sm">
+    <footer class="text-center text-gray-500 text-sm p-4">
         <p>Designed by Apeksha Singh Chauhan</p>
     </footer>
 
     <script>
         const products = [
-            { id: 1, name: "Minimalist Armchair", price: 159.99, imageUrl: "https://images.unsplash.com/photo-1616047021960-932d84950e41?q=80&w=400" },
-            { id: 2, name: "Wooden Side Table", price: 89.50, imageUrl: "https://images.unsplash.com/photo-1541571477755-a1c6a213e481?q=80&w=400" },
-            { id: 3, name: "Geometric Bookcase", price: 249.99, imageUrl: "https://images.unsplash.com/photo-1601614271816-52c786a41f89?q=80&w=400" },
-            { id: 4, name: "Floor Lamp", price: 75.00, imageUrl: "https://images.unsplash.com/photo-1598282386121-50798e21de53?q=80&w=400" },
-            { id: 5, name: "Potted Fiddle Leaf Fig", price: 55.00, imageUrl: "https://images.unsplash.com/photo-1601985474929-e8838084ac9b?q=80&w=400" },
-            { id: 6, name: "Ceramic Vases Set", price: 35.00, imageUrl: "https://images.unsplash.com/photo-1582210871926-787e7428f654?q=80&w=400" }
+            { id: 1, name: "speaker", price: 159.99, imageUrl: "https://images.unsplash.com/photo-1599540097034-e431f45607a7?q=80&w=400" },
+            { id: 2, name: "headphones", price: 89.50, imageUrl: "https://images.unsplash.com/photo-1546435770-5272a27538d5?q=80&w=400" },
+            { id: 3, name: "shirt", price: 249.99, imageUrl: "https://images.unsplash.com/photo-1618032607146-2495d4ed7943?q=80&w=400" },
+            { id: 4, name: "jeans", price: 75.00, imageUrl: "https://images.unsplash.com/photo-1558225573-0402b45133d1?q=80&w=400" },
+            { id: 5, name: "shoes", price: 55.00, imageUrl: "https://images.unsplash.com/photo-1595341888040-3b918731737e?q=80&w=400" },
+            { id: 6, name: "backpack", price: 35.00, imageUrl: "https://images.unsplash.com/photo-1550340443-4f307323b7e7?q=80&w=400" }
         ];
 
         let cart = [];
@@ -411,3 +415,4 @@
 </body>
 </html>
 
+        
