@@ -1,53 +1,121 @@
-<!DOCTYPE html>
+     <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple E-Commerce</title>
+    <title>ByteBazaar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f7fafc;
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        .cart-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .cart-scrollbar::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .cart-scrollbar::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+
+        .cart-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* Keyframes for the product slide-in animation */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .product-card-animation {
+            animation: slideInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+
+        /* Keyframes for cart item addition */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-down {
+            animation: fadeInDown 0.3s ease-out;
+        }
+
+        /* Keyframes for the title glow animation */
+        @keyframes titleGlow {
+            0%, 100% {
+                text-shadow: 0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.5);
+            }
+        }
+        
+        .title-glow-animation {
+            animation: titleGlow 2s infinite alternate;
         }
     </style>
 </head>
-<body class="bg-gray-100 p-4 sm:p-8">
-    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-10">
+
+<body class="p-4 sm:p-8">
+    <div class="max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-200">
         <header class="text-center mb-10">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">
-                Simple E-Commerce Store
+            <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight title-glow-animation">
+                ByteBazaar 💻
             </h1>
-            <p class="mt-2 text-gray-600">
-                A demo project for a working e-commerce website.
+            <p class="mt-2 text-lg text-gray-600">
+                Bringing the future to your doorstep.
             </p>
         </header>
 
-        <main class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <main class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             <!-- Product List Section -->
             <section class="md:col-span-2">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Products</h2>
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Our Products 🛍️</h2>
                 <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Products will be dynamically added here -->
+                    <!-- Products will be dynamically added here with a slight animation delay -->
                 </div>
             </section>
 
             <!-- Shopping Cart Section -->
-            <aside class="md:col-span-1 bg-gray-50 rounded-lg shadow-inner p-6">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Shopping Cart</h2>
-                <div id="cart-items" class="space-y-4 mb-6">
-                    <p id="empty-cart-message" class="text-gray-500 italic">Your cart is empty.</p>
+            <aside class="md:col-span-1 bg-gray-50 rounded-2xl shadow-inner p-6 flex flex-col h-full border border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Shopping Cart 🛒</h2>
+                <!-- Cart items container with a fixed height and scrollbar for many items -->
+                <div id="cart-items" class="space-y-4 mb-6 flex-grow overflow-y-auto cart-scrollbar pr-2">
+                    <p id="empty-cart-message" class="text-gray-500 italic text-center py-4">Your cart is empty.</p>
                 </div>
-                <div class="border-t pt-4">
-                    <div class="flex justify-between items-center font-bold text-lg text-gray-800">
+                <div class="border-t pt-4 mt-auto border-gray-300">
+                    <div class="flex justify-between items-center font-bold text-xl text-gray-800">
                         <span>Total:</span>
                         <span id="cart-total">₹0.00</span>
                     </div>
                 </div>
                 <button id="checkout-button"
-                    class="mt-6 w-full py-3 px-6 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                    disabled>
-                    Checkout
+                    class="mt-6 w-full py-4 px-6 bg-blue-600 text-white font-bold rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    Checkout ✅
                 </button>
             </aside>
         </main>
@@ -55,39 +123,38 @@
 
     <!-- Message Box for alerts -->
     <div id="message-box" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-lg shadow-xl p-6 sm:p-8 w-full max-w-sm">
+        <div class="bg-white rounded-xl shadow-xl p-6 sm:p-8 w-full max-w-sm transform transition-transform duration-300 scale-95 opacity-0">
             <div class="flex justify-between items-start mb-4">
                 <h3 id="message-title" class="text-xl font-bold text-gray-800"></h3>
-                <button id="close-message-box" class="text-gray-400 hover:text-gray-600">&times;</button>
+                <button id="close-message-box" class="text-gray-400 hover:text-gray-600 font-bold text-2xl">&times;</button>
             </div>
             <p id="message-content" class="text-gray-600 mb-6"></p>
             <button id="ok-message-box"
-                class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-300">
+                class="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-300">
                 OK
             </button>
         </div>
     </div>
-    
+
     <!-- Footer -->
     <footer class="mt-8 text-center text-gray-500 text-sm">
-        <p>Designed by [Apekshasinghchauhan]</p>
+        <p>A demo project by Gemini.</p>
     </footer>
 
     <script>
+        // Use a single, reliable placeholder service for images.
         const products = [
-            { id: 1, name: "Stylish Backpack", price: 59.99,imageUrl: "/simple-ecommerce-demo/images/Google_AI_Studio_2025-09-12T21_37_37.406Z.png" },
-            { id: 2, name: "Wireless Headphones", price: 89.90,imageUrl: "/simple-ecommerce-demo/images/Google_AI_Studio_2025-09-12T21_38_11.201Z.png"},
-    // ...and so on for the rest of your products.
-];
- color: "c0c0c0" },
-            { id: 3, name: "Smartwatch", price: 199.99, color: "b0b0b0",imageUrl: "/simple-ecommerce-demo/images/Google_AI_Studio_2025-09-12T21_39_26.464Z.png},
-            { id: 4, name: "Portable Speaker", price: 45.00, color: "a0a0a0",imageUrl: "/simple-ecommerce-demo/images/Google_AI_Studio_2025-09-12T21_39_54.702Z.png},
-            { id: 5, name: "Coffee Maker", price: 75.00, color: "909090",imageUrl: "/simple-ecommerce-demo/images/Google_AI_Studio_2025-09-12T21_40_19.257Z.png },
-            { id: 6, name: "Ergonomic Mouse", price: 25.00, color: "808080",imageUrl: "/simple-ecommerce-demo/images/Google_AI_Studio_2025-09-12T21_40_55.841Z.png }
+            { id: 1, name: "Stylish Backpack", price: 59.99, imageUrl: "https://placehold.co/400x300/60a5fa/ffffff?text=Backpack" },
+            { id: 2, name: "Wireless Headphones", price: 89.90, imageUrl: "https://placehold.co/400x300/4ade80/ffffff?text=Headphones" },
+            { id: 3, name: "Smartwatch", price: 199.99, imageUrl: "https://placehold.co/400x300/f87171/ffffff?text=Smartwatch" },
+            { id: 4, name: "Portable Speaker", price: 45.00, imageUrl: "https://placehold.co/400x300/a78bfa/ffffff?text=Speaker" },
+            { id: 5, name: "Coffee Maker", price: 75.00, imageUrl: "https://placehold.co/400x300/22d3ee/ffffff?text=Coffee+Maker" },
+            { id: 6, name: "Ergonomic Mouse", price: 25.00, imageUrl: "https://placehold.co/400x300/facc15/ffffff?text=Mouse" }
         ];
 
         let cart = [];
 
+        // DOM element references
         const productListEl = document.getElementById('product-list');
         const cartItemsEl = document.getElementById('cart-items');
         const cartTotalEl = document.getElementById('cart-total');
@@ -99,49 +166,53 @@
         const closeMessageBoxButton = document.getElementById('close-message-box');
         const okMessageBoxButton = document.getElementById('ok-message-box');
 
-        // Function to show a custom message box
+        // Function to show a custom message box instead of alert()
         function showMessage(title, message) {
             messageTitleEl.textContent = title;
             messageContentEl.textContent = message;
             messageBoxEl.classList.remove('hidden');
             messageBoxEl.classList.add('flex');
+
+            // Animate the message box for a smooth entry
+            const contentBox = messageBoxEl.querySelector('div');
+            setTimeout(() => {
+                contentBox.classList.remove('scale-95', 'opacity-0');
+                contentBox.classList.add('scale-100', 'opacity-100');
+            }, 10);
         }
 
-        closeMessageBoxButton.addEventListener('click', () => {
-            messageBoxEl.classList.remove('flex');
-            messageBoxEl.classList.add('hidden');
-        });
+        // Function to hide the custom message box
+        function hideMessageBox() {
+            const contentBox = messageBoxEl.querySelector('div');
+            contentBox.classList.remove('scale-100', 'opacity-100');
+            contentBox.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                messageBoxEl.classList.remove('flex');
+                messageBoxEl.classList.add('hidden');
+            }, 300); // Wait for the transition to finish
+        }
 
-        okMessageBoxButton.addEventListener('click', () => {
-            messageBoxEl.classList.remove('flex');
-            messageBoxEl.classList.add('hidden');
-        });
+        // Close message box event listeners
+        closeMessageBoxButton.addEventListener('click', hideMessageBox);
+        okMessageBoxButton.addEventListener('click', hideMessageBox);
 
         // Renders all products on the page
         function renderProducts() {
-            productListEl.innerHTML = '';
-            products.forEach(product => {
+            productListEl.innerHTML = ''; // Clear previous products
+            products.forEach((product, index) => {
                 const productCard = document.createElement('div');
-                productCard.className = 'bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105';
-                
-                // Create an inline SVG for the image placeholder
-                const svgContent = `
-                    <svg width="400" height="300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${product.name}" preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <rect width="100%" height="100%" fill="#${product.color}"></rect>
-                        <text x="50%" y="50%" fill="#333" text-anchor="middle" dominant-baseline="middle" font-size="2em" font-weight="bold">${product.name.split(' ').map(word => word[0]).join('')}</text>
-                    </svg>
-                `;
+                // Apply a delay to the animation of each product card
+                productCard.style.animationDelay = `${index * 0.1}s`;
+                productCard.className = 'bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl product-card-animation';
 
                 productCard.innerHTML = `
-                    <div class="w-full h-48 flex items-center justify-center bg-gray-200">
-                        ${svgContent}
-                    </div>
+                    <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover">
                     <div class="p-4">
                         <h3 class="font-semibold text-lg text-gray-800 mb-1">${product.name}</h3>
                         <p class="text-blue-600 font-bold text-xl">₹${product.price.toFixed(2)}</p>
                         <button data-id="${product.id}"
                             class="mt-4 w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-300 add-to-cart-btn">
-                            Add to Cart
+                            Add to Cart ➕
                         </button>
                     </div>
                 `;
@@ -160,10 +231,11 @@
                 checkoutButtonEl.disabled = false;
                 cart.forEach(item => {
                     const cartItem = document.createElement('div');
-                    cartItem.className = 'flex items-center justify-between bg-white rounded-md p-3 shadow-sm';
+                    // Add hover effect to cart items
+                    cartItem.className = 'flex items-center justify-between bg-white rounded-md p-3 shadow-sm border border-gray-200 fade-in-down transition-transform duration-200 hover:scale-[1.02] cursor-pointer';
                     cartItem.innerHTML = `
                         <div>
-                            <p class="font-medium text-gray-800">${item.name}</p>
+                            <p class="font-medium text-gray-800">🛍️ ${item.name}</p>
                             <p class="text-sm text-gray-500">${item.quantity} x ₹${item.price.toFixed(2)}</p>
                         </div>
                         <span class="font-bold text-gray-700">₹${(item.price * item.quantity).toFixed(2)}</span>
@@ -193,23 +265,26 @@
                     cart.push({ ...productToAdd, quantity: 1 });
                 }
                 renderCart();
-                showMessage('Item Added', `${productToAdd.name} has been added to your cart.`);
+                showMessage('Item Added ℹ️', `${productToAdd.name} has been added to your cart.`);
             }
         });
 
         // Handles the checkout button click
         checkoutButtonEl.addEventListener('click', () => {
             if (cart.length > 0) {
-                showMessage('Checkout', 'Your order has been placed successfully!');
+                showMessage('Checkout Successful 🎉', 'Your order has been placed successfully!');
+                // Clear the cart after successful checkout
                 cart = [];
                 renderCart();
             }
         });
 
-        // Initial render
+        // Initial render of products and cart on page load
         renderProducts();
         renderCart();
     </script>
 </body>
+
 </html>
 
+     
