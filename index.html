@@ -144,10 +144,8 @@
 </head>
 
 <body class="p-4 sm:p-8 relative">
-    <!-- Animated background canvas -->
     <canvas id="bg-canvas"></canvas>
 
-    <!-- Main content container, now with a subtle animated gradient background -->
     <div class="max-w-7xl mx-auto rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-200 relative z-10 animated-bg">
         <header class="text-center mb-10">
             <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight title-glow-animation">
@@ -159,7 +157,6 @@
         </header>
 
         <main class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            <!-- Product List Section -->
             <section class="md:col-span-2">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-semibold text-gray-800">Our Products 🛍️</h2>
@@ -173,14 +170,11 @@
                     </div>
                 </div>
                 <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Products will be dynamically added here with a slight animation delay -->
-                </div>
+                    </div>
             </section>
 
-            <!-- Shopping Cart Section -->
             <aside class="md:col-span-1 bg-gray-50 rounded-2xl shadow-inner p-6 flex flex-col h-full border border-gray-200">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-6">Shopping Cart 🛒</h2>
-                <!-- Cart items container with a fixed height and scrollbar for many items -->
                 <div id="cart-items" class="space-y-4 mb-6 flex-grow overflow-y-auto cart-scrollbar pr-2">
                     <p id="empty-cart-message" class="text-gray-500 italic text-center py-4">Your cart is empty.</p>
                 </div>
@@ -198,7 +192,6 @@
         </main>
     </div>
 
-    <!-- Message Box for alerts -->
     <div id="message-box" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center p-4 z-50">
         <div class="bg-white rounded-xl shadow-xl p-6 sm:p-8 w-full max-w-sm transform transition-transform duration-300 scale-95 opacity-0">
             <div class="flex justify-between items-start mb-4">
@@ -213,7 +206,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="mt-8 text-center text-gray-500 text-sm">
         <p>A demo project by Gemini.</p>
     </footer>
@@ -546,5 +538,3 @@
 </body>
 
 </html>
-
-     
