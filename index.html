@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -58,7 +58,6 @@
       transform: scale(1.05);
     }
 
-    /* Hero Section */
     .hero {
       text-align: center;
       background: linear-gradient(135deg, #ff4b2b, #ff416c);
@@ -81,7 +80,6 @@
       opacity: 0.9;
     }
 
-    /* Search + Filter Section */
     .filters {
       display: flex;
       justify-content: center;
@@ -190,7 +188,6 @@
       transform: scale(1.05);
     }
 
-    /* Cart Drawer */
     .cart-drawer {
       position: fixed;
       top: 0;
@@ -227,7 +224,6 @@
       color: var(--text);
     }
 
-    /* Toast Notification */
     .toast {
       position: fixed;
       top: 20px;
@@ -275,13 +271,11 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
   <section class="hero">
     <h1>Welcome to TrendyStore</h1>
     <p>Shop the latest gadgets, fashion & more – with smooth animations 😉</p>
   </section>
 
-  <!-- Search + Filter -->
   <div class="filters">
     <input type="text" id="search" placeholder="Search product..." onkeyup="filterProducts()">
     <button class="filter-btn" onclick="filterCategory('all')">All</button>
@@ -291,7 +285,6 @@
 
   <div id="products"></div>
 
-  <!-- Cart Drawer -->
   <div id="cartDrawer" class="cart-drawer">
     <div class="cart-header">
       <span>Your Cart</span>
@@ -304,15 +297,15 @@
   <div id="toast" class="toast" style="display:none;">✅ Added to Cart</div>
 
   <script>
-    const products = [  
-        { id: 1, name: "Bluetooth Speaker", price: 1599, category:"electronics", imageUrl: "https://images.unsplash.com/photo-1626084024523-2895f36e8971?q=80&w=600" },  
-        { id: 2, name: "Wireless Headphones", price: 2499, category:"electronics", imageUrl: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600" },  
-        { id: 3, name: "Classic White Shirt", price: 799, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1520975922071-a24e76d128b0?q=80&w=600" },  
-        { id: 4, name: "Blue Denim Jeans", price: 1199, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1602293589930-45aadcb2a4b0?q=80&w=600" },  
-        { id: 5, name: "Running Sneakers", price: 2899, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1606813907291-773bbfc4b979?q=80&w=600" },  
-        { id: 6, name: "Travel Backpack", price: 1599, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=600" },
-        { id: 7, name: "Smartwatch", price: 4999, category:"electronics", imageUrl: "https://images.unsplash.com/photo-1516728778615-2d590ea1856f?q=80&w=600" },
-        { id: 8, name: "Designer Sunglasses", price: 1999, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=600" }
+    const products = [
+      { id: 1, name: "Bluetooth Speaker", price: 1599, category:"electronics", imageUrl: "https://images.unsplash.com/photo-1626084024523-2895f36e8971?auto=format&fit=crop&w=600&q=80" },
+      { id: 2, name: "Wireless Headphones", price: 2499, category:"electronics", imageUrl: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=600&q=80" },
+      { id: 3, name: "Classic White Shirt", price: 799, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1520975922071-a24e76d128b0?auto=format&fit=crop&w=600&q=80" },
+      { id: 4, name: "Blue Denim Jeans", price: 1199, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1602293589930-45aadcb2a4b0?auto=format&fit=crop&w=600&q=80" },
+      { id: 5, name: "Running Sneakers", price: 2899, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1606813907291-773bbfc4b979?auto=format&fit=crop&w=600&q=80" },
+      { id: 6, name: "Travel Backpack", price: 1599, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80" },
+      { id: 7, name: "Smartwatch", price: 4999, category:"electronics", imageUrl: "https://images.unsplash.com/photo-1516728778615-2d590ea1856f?auto=format&fit=crop&w=600&q=80" },
+      { id: 8, name: "Designer Sunglasses", price: 1999, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=600&q=80" }
     ];
 
     let cart = [];
@@ -327,15 +320,18 @@
         .filter(p => (activeCategory === "all" || p.category === activeCategory))
         .filter(p => p.name.toLowerCase().includes(searchValue))
         .forEach((p, index) => {
-        container.innerHTML += `
-          <div class="product" style="animation-delay: ${index * 0.1}s;">
+          const productDiv = document.createElement("div");
+          productDiv.className = "product";
+          productDiv.style.animationDelay = `${index * 0.1}s`;
+          productDiv.innerHTML = `
             <img src="${p.imageUrl}" alt="${p.name}" 
               onerror="this.src='https://placehold.co/400x300/e09393/ffffff?text=No+Image'">
             <h3>${p.name}</h3>
             <p>₹${p.price}</p>
             <button class="btn" onclick="addToCart(${p.id})">Add to Cart</button>
-          </div>`;
-      });
+          `;
+          container.appendChild(productDiv);
+        });
     }
 
     function addToCart(id) {
