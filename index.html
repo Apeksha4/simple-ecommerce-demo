@@ -1,4 +1,4 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -51,13 +51,14 @@ header button {
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  transition: transform 0.2s ease, background 0.3s;
+  transition: transform 0.2s ease, background 0.3s, box-shadow 0.3s;
 }
 
 header button:hover {
   transform: scale(1.1);
   background: var(--accent);
   color: #fff;
+  box-shadow: 0 4px 15px rgba(255,75,43,0.5);
 }
 
 .hero {
@@ -68,6 +69,8 @@ header button:hover {
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
   animation: fadeDown 1s ease;
+  background-size: 400% 400%;
+  animation: gradientBG 10s ease infinite;
 }
 
 .hero h1 {
@@ -105,7 +108,7 @@ header button:hover {
 .filters input:focus {
   width: 260px;
   border-color: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
+  box-shadow: 0 0 12px var(--accent);
 }
 
 .filter-btn {
@@ -116,12 +119,13 @@ header button:hover {
   border-radius: 25px;
   cursor: pointer;
   font-weight: bold;
-  transition: transform 0.2s ease, background 0.3s;
+  transition: transform 0.3s ease, background 0.3s, box-shadow 0.3s;
 }
 
 .filter-btn:hover {
   transform: scale(1.1);
   background: #ff1e54;
+  box-shadow: 0 6px 20px rgba(255,30,84,0.4);
 }
 
 #products {
@@ -142,12 +146,28 @@ header button:hover {
   border-radius: 15px;
   text-align: center;
   box-shadow: 0 4px 12px var(--shadow);
-  transition: transform 0.6s ease;
+  transition: transform 0.6s ease, box-shadow 0.4s ease;
   transform-style: preserve-3d;
+  position: relative;
+}
+
+.product-inner::before {
+  content:"";
+  position:absolute;
+  top:0; left:0; width:100%; height:100%;
+  border-radius:15px;
+  background: linear-gradient(120deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+  transform: translateX(-100%) skewX(-20deg);
+  transition: transform 0.5s ease;
+}
+
+.product-inner:hover::before {
+  transform: translateX(200%) skewX(-20deg);
 }
 
 .product:hover .product-inner {
   transform: rotateY(180deg) translateY(-5px);
+  box-shadow: 0 15px 35px rgba(255,75,43,0.4);
 }
 
 .product-front, .product-back {
@@ -160,6 +180,11 @@ header button:hover {
   height: 200px;
   object-fit: cover;
   border-radius: 15px 15px 0 0;
+  transition: transform 0.3s ease;
+}
+
+.product-front img:hover {
+  transform: scale(1.05);
 }
 
 .product-front h3, .product-front p {
@@ -192,12 +217,13 @@ header button:hover {
   font-weight: bold;
   background: #fff;
   color: var(--accent);
-  transition: transform 0.2s ease, background 0.3s;
+  transition: transform 0.2s ease, background 0.3s, box-shadow 0.3s;
 }
 
 .product-back button:hover {
   transform: scale(1.05);
   background: #f7f7f7;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .cart-drawer {
@@ -253,6 +279,7 @@ header button:hover {
 @keyframes fadeDown {0% { opacity: 0; transform: translateY(-30px); }100% { opacity: 1; transform: translateY(0); }}
 @keyframes slideUp {0% { transform: translateY(20px); opacity: 0; }100% { transform: translateY(0); opacity: 1; }}
 @keyframes toastSlide {0% { opacity: 0; transform: translateY(-20px); }30% { opacity: 1; transform: translateY(0); }70% { opacity: 1; }100% { opacity: 0; transform: translateY(-20px); }}
+@keyframes gradientBG {0% {background-position:0% 50%}50% {background-position:100% 50%}100% {background-position:0% 50%}}
 
 </style>
 </head>
@@ -292,6 +319,7 @@ header button:hover {
 <div id="toast" class="toast" style="display:none;">✅ Added to Cart</div>
 
 <script>
+// Same JS as before
 const products = [
   { id:1, name:"Bluetooth Speaker", price:1599, category:"electronics", imageUrl:"https://images.unsplash.com/photo-1626084024523-2895f36e8971?auto=format&fit=crop&w=600&q=80" },
   { id:2, name:"Wireless Headphones", price:2499, category:"electronics", imageUrl:"https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=600&q=80" },
