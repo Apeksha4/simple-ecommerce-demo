@@ -71,8 +71,8 @@ header button:hover {
   padding: 60px 20px;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
-  animation: gradientBG 20s ease infinite;
   background-size: 400% 400%;
+  animation: gradientBG 20s ease infinite, fadeDown 1s ease;
 }
 
 .hero h1 {
@@ -143,7 +143,7 @@ header button:hover {
   perspective: 1000px;
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeInUp 0.5s forwards;
+  animation: fadeInUp 0.6s forwards;
 }
 
 .product-inner {
@@ -154,11 +154,6 @@ header button:hover {
   transition: transform 0.6s ease, box-shadow 0.4s ease;
   transform-style: preserve-3d;
   position: relative;
-  cursor: pointer;
-}
-
-.product-inner.flipped {
-  transform: rotateY(180deg) translateY(-5px);
 }
 
 .product-inner::before {
@@ -173,6 +168,12 @@ header button:hover {
 
 .product-inner:hover::before {
   transform: translateX(200%) skewX(-20deg);
+}
+
+.product:hover .product-inner,
+.product-inner.flipped {
+  transform: rotateY(180deg) translateY(-5px);
+  box-shadow: 0 15px 35px rgba(255,75,43,0.4);
 }
 
 .product-front, .product-back {
@@ -284,24 +285,19 @@ header button:hover {
 footer {
   text-align:center;
   padding:20px;
-  background:var(--text);
-  color:var(--bg);
+  background: var(--text);
+  color: var(--bg);
   font-weight:bold;
   margin-top:30px;
   border-top:2px solid var(--accent);
   transition: background 0.3s, color 0.3s;
 }
 
-body.dark footer {
-  background: var(--text);
-  color: var(--bg);
-}
-
 @keyframes fadeDown {0% { opacity: 0; transform: translateY(-30px); }100% { opacity: 1; transform: translateY(0); }}
 @keyframes slideUp {0% { transform: translateY(20px); opacity: 0; }100% { transform: translateY(0); opacity: 1; }}
 @keyframes toastSlide {0% { opacity: 0; transform: translateY(-20px); }30% { opacity: 1; transform: translateY(0); }70% { opacity: 1; }100% { opacity: 0; transform: translateY(-20px); }}
 @keyframes gradientBG {0% {background-position:0% 50%}50% {background-position:100% 50%}100% {background-position:0% 50%}}
-@keyframes fadeInUp {to {opacity:1; transform:translateY(0);}}
+@keyframes fadeInUp {to { opacity: 1; transform: translateY(0); }}
 </style>
 </head>
 <body>
@@ -352,9 +348,7 @@ const products = [
   { id:5, name:"Running Sneakers", price:2899, category:"fashion", imageUrl:"https://images.unsplash.com/photo-1606813907291-773bbfc4b979?auto=format&fit=crop&w=600&q=80" },
   { id:6, name:"Makeup Brushes", price:1599, category:"fashion", imageUrl:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80" },
   { id:7, name:"Smartwatch", price:4999, category:"electronics", imageUrl:"https://images.unsplash.com/photo-1516728778615-2d590ea1856f?auto=format&fit=crop&w=600&q=80" },
-  { id:8, name:"Shoes", price:1999, category:"fashion", imageUrl:"https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=600&q=80" },
-  { id:9, name:"Wireless Earbuds", price:2999, category:"electronics", imageUrl:"https://images.unsplash.com/photo-1595854340953-66e5b7c3787f?auto=format&fit=crop&w=600&q=80" },
-  { id:10, name:"Leather Jacket", price:5999, category:"fashion", imageUrl:"https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" }
+  { id:8, name:"Shoes", price:1999, category:"fashion", imageUrl:"https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=600&q=80" }
 ];
 
 let cart = [];
@@ -369,7 +363,7 @@ function renderProducts(){
   .forEach((p,index)=>{
     const div=document.createElement("div");
     div.className="product";
-    div.style.animationDelay = `${index * 0.1}s`;
+    div.style.animationDelay=`${index * 0.1}s`;
     div.innerHTML=`<div class="product-inner">
       <div class="product-front">
         <img src="${p.imageUrl}" alt="${p.name}" onerror="this.src='https://placehold.co/400x300/e09393/ffffff?text=No+Image'">
@@ -380,4 +374,61 @@ function renderProducts(){
         <h3>${p.name}</h3>
         <p>₹${p.price}</p>
         <button onclick="addToCart(${p.id})">Add to Cart</button>
-      </div
+      </div>
+    </div>`;
+    div.addEventListener("click",()=>{div.querySelector(".product-inner").classList.toggle("flipped");});
+    container.appendChild(div);
+  });
+}
+
+function addToCart(id){
+  const product=products.find(p=>p.id===id);
+  cart.push(product);
+  renderCart();
+  showToast();
+}
+
+function removeFromCart(index){
+  cart.splice(index,1);
+  renderCart();
+}
+
+function renderCart(){
+  const container=document.getElementById("cart-items");
+  if(cart.length===0){
+    container.innerHTML="Cart is empty";
+    document.getElementById("total").textContent=0;
+    return;
+  }
+  container.innerHTML=cart.map((item,index)=>`<p>${item.name} - ₹${item.price} <button onclick="removeFromCart(${index})">✖</button></p>`).join("");
+  const total=cart.reduce((sum,item)=>sum+item.price,0);
+  document.getElementById("total").textContent=total;
+}
+
+function showToast(){
+  const toast=document.getElementById("toast");
+  toast.style.display="block";
+  setTimeout(()=>{toast.style.display="none";},2500);
+}
+
+function toggleCart(){
+  document.getElementById("cartDrawer").classList.toggle("open");
+}
+
+function toggleDarkMode(){
+  document.body.classList.toggle("dark");
+}
+
+function filterCategory(cat){
+  activeCategory=cat;
+  renderProducts();
+}
+
+function filterProducts(){
+  renderProducts();
+}
+
+renderProducts();
+</script>
+</body>
+</html>
