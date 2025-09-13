@@ -3,30 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demo Ecommerce Website</title>
+  <title>TrendyStore - Demo E-Commerce</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #f9f9f9, #f0f0f0);
+      background: linear-gradient(135deg, #f7f7f7, #ececec);
     }
 
-    h1 {
-      text-align: center;
+    header {
       background: #000;
       color: #fff;
-      padding: 15px 0;
-      margin: 0;
+      text-align: center;
+      padding: 15px;
       font-size: 1.8rem;
+      font-weight: bold;
       letter-spacing: 1px;
+      animation: fadeDown 0.8s ease;
     }
 
     #products {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      padding: 20px;
+      gap: 25px;
+      padding: 25px;
       max-width: 1200px;
       margin: auto;
     }
@@ -45,7 +46,7 @@
 
     .product img {
       width: 100%;
-      height: 180px;
+      height: 200px;
       object-fit: cover;
       border-radius: 12px;
       margin-bottom: 10px;
@@ -53,16 +54,16 @@
     }
 
     .product:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
     }
 
     .product:hover img {
-      transform: scale(1.05);
+      transform: scale(1.07);
     }
 
     h3 {
-      margin: 5px 0;
+      margin: 8px 0;
       font-size: 1.2rem;
     }
 
@@ -75,7 +76,7 @@
     .btn {
       background: #000;
       color: white;
-      padding: 8px 14px;
+      padding: 10px 14px;
       border: none;
       border-radius: 8px;
       margin-top: 8px;
@@ -91,29 +92,50 @@
 
     .cart {
       background: #fff;
-      padding: 15px;
-      margin: 20px auto;
+      padding: 20px;
+      margin: 30px auto;
       max-width: 500px;
       border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      animation: fadeIn 0.6s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      animation: fadeIn 0.8s ease;
     }
 
-    /* 🔥 Animations */
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(-20px);
+      animation: toastSlide 0.6s forwards;
+    }
+
     @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(20px); }
+      0% { opacity: 0; transform: translateY(30px); }
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    @keyframes fadeDown {
+      0% { opacity: 0; transform: translateY(-30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes toastSlide {
+      0% { opacity: 0; transform: translateY(-20px); }
+      30% { opacity: 1; transform: translateY(0); }
+      70% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-20px); }
     }
   </style>
 </head>
 <body>
 
-  <h1>🛒 Trendy Store</h1>
+  <header>🛒 TrendyStore</header>
 
   <div id="products"></div>
 
@@ -123,15 +145,18 @@
     <p><b>Total: ₹<span id="total">0</span></b></p>
   </div>
 
+  <div id="toast" class="toast" style="display:none;">✅ Added to Cart</div>
+
   <script>
-    // ✅ Fixed Product Array with Direct Image URLs
     const products = [  
-        { id: 1, name: "Speaker", price: 159.99, imageUrl: "https://images.unsplash.com/photo-1626084024523-2895f36e8971?q=80&w=400" },  
-        { id: 2, name: "Headphones", price: 89.50, imageUrl: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=400" },  
-        { id: 3, name: "Shirt", price: 249.99, imageUrl: "https://images.unsplash.com/photo-1520975922071-a24e76d128b0?q=80&w=400" },  
-        { id: 4, name: "Jeans", price: 75.00, imageUrl: "https://images.unsplash.com/photo-1602293589930-45aadcb2a4b0?q=80&w=400" },  
-        { id: 5, name: "Shoes", price: 390.99 , imageUrl: "https://images.unsplash.com/photo-1606813907291-773bbfc4b979?q=80&w=400" },  
-        { id: 6, name: "Backpack", price: 35.00, imageUrl: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=400" }  
+        { id: 1, name: "Bluetooth Speaker", price: 1599, imageUrl: "https://images.unsplash.com/photo-1626084024523-2895f36e8971?q=80&w=600" },  
+        { id: 2, name: "Wireless Headphones", price: 2499, imageUrl: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600" },  
+        { id: 3, name: "Classic White Shirt", price: 799, imageUrl: "https://images.unsplash.com/photo-1520975922071-a24e76d128b0?q=80&w=600" },  
+        { id: 4, name: "Blue Denim Jeans", price: 1199, imageUrl: "https://images.unsplash.com/photo-1602293589930-45aadcb2a4b0?q=80&w=600" },  
+        { id: 5, name: "Running Sneakers", price: 2899 , imageUrl: "https://images.unsplash.com/photo-1606813907291-773bbfc4b979?q=80&w=600" },  
+        { id: 6, name: "Travel Backpack", price: 1599, imageUrl: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=600" },
+        { id: 7, name: "Smartwatch", price: 4999, imageUrl: "https://images.unsplash.com/photo-1516728778615-2d590ea1856f?q=80&w=600" },
+        { id: 8, name: "Designer Sunglasses", price: 1999, imageUrl: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=600" }
     ];
 
     let cart = [];
@@ -143,7 +168,7 @@
         container.innerHTML += `
           <div class="product" style="animation-delay: ${index * 0.1}s;">
             <img src="${p.imageUrl}" alt="${p.name}" 
-              onerror="this.src='https://placehold.co/400x300/e09393/ffffff?text=Image+Not+Found'">
+              onerror="this.src='https://placehold.co/400x300/e09393/ffffff?text=No+Image'">
             <h3>${p.name}</h3>
             <p>₹${p.price}</p>
             <button class="btn" onclick="addToCart(${p.id})">Add to Cart</button>
@@ -155,6 +180,7 @@
       const product = products.find(p => p.id === id);
       cart.push(product);
       renderCart();
+      showToast();
     }
 
     function renderCart() {
@@ -166,7 +192,13 @@
       }
       container.innerHTML = cart.map(item => `<p>${item.name} - ₹${item.price}</p>`).join("");
       const total = cart.reduce((sum, item) => sum + item.price, 0);
-      document.getElementById("total").textContent = total.toFixed(2);
+      document.getElementById("total").textContent = total;
+    }
+
+    function showToast() {
+      const toast = document.getElementById("toast");
+      toast.style.display = "block";
+      setTimeout(() => { toast.style.display = "none"; }, 2500);
     }
 
     renderProducts();
