@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TrendyStore</title>
+<title>🛍️ TrendyStore</title>
 <style>
 :root {
   --bg: #f7f7f7;
@@ -30,8 +30,8 @@ body {
 }
 
 header {
-  background: var(--text);
-  color: var(--bg);
+  background: linear-gradient(135deg, #ff4b2b, #ff416c);
+  color: white;
   text-align: center;
   padding: 15px;
   font-size: 1.8rem;
@@ -44,23 +44,40 @@ header {
   position: sticky;
   top: 0;
   z-index: 999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+header .logo {
+  font-size: 2rem;
+  font-weight: 900;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+header .logo span {
+  background: white;
+  color: #ff4b2b;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 1.2rem;
 }
 
 header button {
-  background: var(--bg);
-  color: var(--text);
+  background: white;
+  color: #ff4b2b;
   border: none;
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  transition: transform 0.2s ease, background 0.3s, box-shadow 0.3s;
+  transition: transform 0.2s ease, box-shadow 0.3s;
 }
 
 header button:hover {
   transform: scale(1.1);
-  background: var(--accent);
-  color: #fff;
   box-shadow: 0 4px 15px rgba(255,75,43,0.5);
 }
 
@@ -71,14 +88,14 @@ header button:hover {
   padding: 60px 20px;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
-  background-size: 400% 400%;
   animation: gradientBG 20s ease infinite, fadeDown 1s ease;
 }
 
 .hero h1 {
-  font-size: 2.5rem;
-  margin: 0;
-  animation: slideUp 1s ease forwards;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
 .hero p {
@@ -156,29 +173,9 @@ header button:hover {
   position: relative;
 }
 
-.product-inner::before {
-  content:"";
-  position:absolute;
-  top:0; left:0; width:100%; height:100%;
-  border-radius:15px;
-  background: linear-gradient(120deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
-  transform: translateX(-100%) skewX(-20deg);
-  transition: transform 0.5s ease;
-}
-
-.product-inner:hover::before {
-  transform: translateX(200%) skewX(-20deg);
-}
-
-.product:hover .product-inner,
-.product-inner.flipped {
-  transform: rotateY(180deg) translateY(-5px);
-  box-shadow: 0 15px 35px rgba(255,75,43,0.4);
-}
-
-.product-front, .product-back {
-  backface-visibility: hidden;
-  border-radius: 15px;
+.product-inner:hover {
+  transform: scale(1.05) rotateX(3deg) rotateY(-3deg);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
 }
 
 .product-front img {
@@ -186,133 +183,76 @@ header button:hover {
   height: 200px;
   object-fit: cover;
   border-radius: 15px 15px 0 0;
-  transition: transform 0.3s ease;
-}
-
-.product-front img:hover {
-  transform: scale(1.05);
 }
 
 .product-front h3, .product-front p {
   margin: 8px 0;
 }
 
-.product-back {
-  position: absolute;
+/* Modal Styling */
+.modal {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--accent);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
+  background: rgba(0,0,0,0.7);
+  display: none;
   justify-content: center;
   align-items: center;
-  transform: rotateY(180deg);
+  z-index: 2000;
+}
+.modal-content {
+  background: var(--card);
+  border-radius: 20px;
+  max-width: 400px;
+  text-align: center;
   padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  animation: fadeDown 0.5s ease;
+}
+.modal-content img {
+  width: 100%;
   border-radius: 15px;
 }
-
-.product-back button {
+.modal-close {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
   margin-top: 10px;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: bold;
-  background: #fff;
-  color: var(--accent);
-  transition: transform 0.2s ease, background 0.3s, box-shadow 0.3s;
-}
-
-.product-back button:hover {
-  transform: scale(1.05);
-  background: #f7f7f7;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-.cart-drawer {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 320px;
-  height: 100%;
-  background: var(--card);
-  box-shadow: -4px 0 12px var(--shadow);
-  transition: right 0.4s ease;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  z-index: 1000;
-}
-
-.cart-drawer.open {
-  right: 0;
-}
-
-.cart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.4rem;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-.close-btn {
-  cursor: pointer;
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  color: var(--text);
-}
-
-.toast {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #28a745;
-  color: #fff;
-  padding: 10px 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  opacity: 0;
-  transform: translateY(-20px);
-  animation: toastSlide 0.6s forwards;
 }
 
 footer {
-  text-align:center;
-  padding:20px;
+  text-align: center;
+  padding: 20px;
   background: var(--text);
   color: var(--bg);
-  font-weight:bold;
-  margin-top:30px;
-  border-top:2px solid var(--accent);
-  transition: background 0.3s, color 0.3s;
+  font-weight: bold;
+  margin-top: 30px;
+  border-top: 2px solid var(--accent);
 }
 
-@keyframes fadeDown {0% { opacity: 0; transform: translateY(-30px); }100% { opacity: 1; transform: translateY(0); }}
-@keyframes slideUp {0% { transform: translateY(20px); opacity: 0; }100% { transform: translateY(0); opacity: 1; }}
-@keyframes toastSlide {0% { opacity: 0; transform: translateY(-20px); }30% { opacity: 1; transform: translateY(0); }70% { opacity: 1; }100% { opacity: 0; transform: translateY(-20px); }}
-@keyframes gradientBG {0% {background-position:0% 50%}50% {background-position:100% 50%}100% {background-position:0% 50%}}
-@keyframes fadeInUp {to { opacity: 1; transform: translateY(0); }}
+@keyframes fadeDown {0%{opacity:0;transform:translateY(-30px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes fadeInUp {to {opacity: 1; transform: translateY(0);}}
+@keyframes gradientBG {0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 </style>
 </head>
 <body>
 
 <header>
-  🛒 TrendyStore
+  <div class="logo">Trendy<span>Store</span></div>
   <div>
-    <button onclick="toggleDarkMode()">🌙 Dark</button>
-    <button onclick="toggleCart()">🛍️ Cart</button>
+    <button onclick="toggleDarkMode()">🌙</button>
+    <button onclick="toggleCart()">🛍️</button>
   </div>
 </header>
 
 <section class="hero">
-  <h1>Welcome to TrendyStore</h1>
-  <p>Shop the latest gadgets, fashion & more – with smooth animations 😉</p>
+  <h1>✨ TrendyStore ✨</h1>
+  <p>Shop the latest gadgets, fashion & more – smooth, fast & aesthetic 💖</p>
 </section>
 
 <div class="filters">
@@ -324,109 +264,80 @@ footer {
 
 <div id="products"></div>
 
-<div id="cartDrawer" class="cart-drawer">
-  <div class="cart-header">
-    <span>Your Cart</span>
-    <button class="close-btn" onclick="toggleCart()">✖</button>
+<!-- Modal -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <img id="modalImg" src="" alt="">
+    <h2 id="modalName"></h2>
+    <p id="modalPrice"></p>
+    <button onclick="addToCart(selectedProduct.id)">Add to Cart</button>
+    <button class="modal-close" onclick="closeModal()">Close</button>
   </div>
-  <div id="cart-items">Cart is empty</div>
-  <p><b>Total: ₹<span id="total">0</span></b></p>
 </div>
 
-<div id="toast" class="toast" style="display:none;">✅ Added to Cart</div>
-
 <footer>
-  Designed by Apeksha Singh Chauhan
+  Designed by Apeksha Singh Chauhan 💻
 </footer>
 
 <script>
-const products = [
-  { id:1, name:"Bluetooth Speaker", price:1599, category:"electronics", imageUrl:"images/speaker.jpg" },
-  { id:2, name:"Trouser", price:2499, category:"fashion", imageUrl:"images/trouser.jpg" },
-  { id:3, name:"Classic White Shirt", price:799, category:"fashion", imageUrl:"images/shirt.jpg" },
-  { id:4, name:"Blue Denim Jeans", price:1199, category:"fashion", imageUrl:"images/jeans.jpg" },
-  { id:5, name:"Running Sneakers", price:2899, category:"fashion", imageUrl:"images/sneakers.jpg" },
-  { id:6, name:"Makeup Brushes", price:1599, category:"fashion", imageUrl:"images/brushes.jpg" },
-  { id:7, name:"Smartwatch", price:4999, category:"electronics", imageUrl:"images/watch.jpg" },
-  { id:8, name:"Shoes", price:1999, category:"fashion", imageUrl:"images/shoes.jpg" }
+const products=[
+  {id:1,name:"Bluetooth Speaker",price:1599,category:"electronics",imageUrl:"images/speaker.jpg"},
+  {id:2,name:"Trouser",price:2499,category:"fashion",imageUrl:"images/trouser.jpg"},
+  {id:3,name:"Classic White Shirt",price:799,category:"fashion",imageUrl:"images/shirt.jpg"},
+  {id:4,name:"Blue Denim Jeans",price:1199,category:"fashion",imageUrl:"images/jeans.jpg"},
+  {id:5,name:"Running Sneakers",price:2899,category:"fashion",imageUrl:"images/sneakers.jpg"},
+  {id:6,name:"Makeup Brushes",price:1599,category:"fashion",imageUrl:"images/brushes.jpg"},
+  {id:7,name:"Smartwatch",price:4999,category:"electronics",imageUrl:"images/watch.jpg"},
+  {id:8,name:"Shoes",price:1999,category:"fashion",imageUrl:"images/shoes.jpg"}
 ];
 
-let cart = [];
-let activeCategory = "all";
+let cart=[];
+let activeCategory="all";
+let selectedProduct={};
 
 function renderProducts(){
-  const container = document.getElementById("products");
+  const container=document.getElementById("products");
   container.innerHTML="";
   const searchValue=document.getElementById("search").value.toLowerCase();
-  products.filter(p => (activeCategory==="all"||p.category===activeCategory))
+  products.filter(p=>(activeCategory==="all"||p.category===activeCategory))
   .filter(p=>p.name.toLowerCase().includes(searchValue))
   .forEach((p,index)=>{
     const div=document.createElement("div");
     div.className="product";
-    div.style.animationDelay=`${index * 0.1}s`;
-    div.innerHTML=`<div class="product-inner">
+    div.style.animationDelay=`${index*0.1}s`;
+    div.innerHTML=`<div class="product-inner" onclick="openModal(${p.id})">
       <div class="product-front">
-        <img src="${p.imageUrl}" alt="${p.name}" onerror="this.src='https://placehold.co/400x300/e09393/ffffff?text=No+Image'">
+        <img src="${p.imageUrl}" alt="${p.name}" onerror="this.src='https://placehold.co/400x300?text=No+Image'">
         <h3>${p.name}</h3>
         <p>₹${p.price}</p>
-      </div>
-      <div class="product-back">
-        <h3>${p.name}</h3>
-        <p>₹${p.price}</p>
-        <button onclick="addToCart(${p.id})">Add to Cart</button>
       </div>
     </div>`;
-    div.addEventListener("click",()=>{div.querySelector(".product-inner").classList.toggle("flipped");});
     container.appendChild(div);
   });
+}
+
+function openModal(id){
+  selectedProduct=products.find(p=>p.id===id);
+  document.getElementById("modalImg").src=selectedProduct.imageUrl;
+  document.getElementById("modalName").textContent=selectedProduct.name;
+  document.getElementById("modalPrice").textContent=`₹${selectedProduct.price}`;
+  document.getElementById("productModal").style.display="flex";
+}
+
+function closeModal(){
+  document.getElementById("productModal").style.display="none";
 }
 
 function addToCart(id){
   const product=products.find(p=>p.id===id);
   cart.push(product);
-  renderCart();
-  showToast();
+  closeModal();
+  alert(`${product.name} added to cart!`);
 }
 
-function removeFromCart(index){
-  cart.splice(index,1);
-  renderCart();
-}
-
-function renderCart(){
-  const container=document.getElementById("cart-items");
-  if(cart.length===0){
-    container.innerHTML="Cart is empty";
-    document.getElementById("total").textContent=0;
-    return;
-  }
-  container.innerHTML=cart.map((item,index)=>`<p>${item.name} - ₹${item.price} <button onclick="removeFromCart(${index})">✖</button></p>`).join("");
-  const total=cart.reduce((sum,item)=>sum+item.price,0);
-  document.getElementById("total").textContent=total;
-}
-
-function showToast(){
-  const toast=document.getElementById("toast");
-  toast.style.display="block";
-  setTimeout(()=>{toast.style.display="none";},2500);
-}
-
-function toggleCart(){
-  document.getElementById("cartDrawer").classList.toggle("open");
-}
-
-function toggleDarkMode(){
-  document.body.classList.toggle("dark");
-}
-
-function filterCategory(cat){
-  activeCategory=cat;
-  renderProducts();
-}
-
-function filterProducts(){
-  renderProducts();
-}
+function toggleDarkMode(){document.body.classList.toggle("dark");}
+function filterCategory(cat){activeCategory=cat;renderProducts();}
+function filterProducts(){renderProducts();}
 
 renderProducts();
 </script>
