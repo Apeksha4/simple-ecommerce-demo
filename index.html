@@ -3,69 +3,174 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demo Ecommerce</title>
+  <title>Demo Ecommerce Website</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    .product { border: 1px solid #ddd; border-radius: 10px; padding: 10px; margin: 10px; width: 200px; display: inline-block; vertical-align: top; text-align: center; background: #f8f8f8;}
-    .product img { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; }
-    .btn { background: black; color: white; padding: 6px 12px; border: none; border-radius: 6px; margin-top: 5px; cursor: pointer; }
-    .cart { background: #fff3cd; padding: 10px; border: 1px solid #ffeeba; margin: 10px; border-radius: 8px; }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f9f9f9, #f0f0f0);
+    }
+
+    h1 {
+      text-align: center;
+      background: #000;
+      color: #fff;
+      padding: 15px 0;
+      margin: 0;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+    }
+
+    #products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .product {
+      background: #fff;
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .product img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .product:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+
+    .product:hover img {
+      transform: scale(1.05);
+    }
+
+    h3 {
+      margin: 5px 0;
+      font-size: 1.2rem;
+    }
+
+    p {
+      margin: 5px 0;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .btn {
+      background: #000;
+      color: white;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn:hover {
+      background: #444;
+      transform: scale(1.05);
+    }
+
+    .cart {
+      background: #fff;
+      padding: 15px;
+      margin: 20px auto;
+      max-width: 500px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      animation: fadeIn 0.6s ease;
+    }
+
+    /* 🔥 Animations */
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
 <body>
 
-  <h1 style="text-align:center;">🛒 Demo E-commerce</h1>
+  <h1>🛒 Trendy Store</h1>
+
   <div id="products"></div>
 
   <div class="cart">
-    <h2>Cart</h2>
+    <h2>Your Cart</h2>
     <div id="cart-items">Cart is empty</div>
     <p><b>Total: ₹<span id="total">0</span></b></p>
   </div>
 
-<script>
-  const products = [
-    { id: 1, name: "Speaker", price: 1599, imageUrl: "https://images.unsplash.com/photo-1626084024523-2895f36e8971?q=80&w=400" },
-    { id: 2, name: "Headphones", price: 899, imageUrl: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=400" },
-    { id: 3, name: "Shoes", price: 1299, imageUrl: "https://images.unsplash.com/photo-1606813907291-773bbfc4b979?q=80&w=400" }
-  ];
+  <script>
+    // ✅ Fixed Product Array with Direct Image URLs
+    const products = [  
+        { id: 1, name: "Speaker", price: 159.99, imageUrl: "https://images.unsplash.com/photo-1626084024523-2895f36e8971?q=80&w=400" },  
+        { id: 2, name: "Headphones", price: 89.50, imageUrl: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=400" },  
+        { id: 3, name: "Shirt", price: 249.99, imageUrl: "https://images.unsplash.com/photo-1520975922071-a24e76d128b0?q=80&w=400" },  
+        { id: 4, name: "Jeans", price: 75.00, imageUrl: "https://images.unsplash.com/photo-1602293589930-45aadcb2a4b0?q=80&w=400" },  
+        { id: 5, name: "Shoes", price: 390.99 , imageUrl: "https://images.unsplash.com/photo-1606813907291-773bbfc4b979?q=80&w=400" },  
+        { id: 6, name: "Backpack", price: 35.00, imageUrl: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=400" }  
+    ];
 
-  let cart = [];
+    let cart = [];
 
-  function renderProducts() {
-    const container = document.getElementById("products");
-    container.innerHTML = "";
-    products.forEach(p => {
-      container.innerHTML += `
-        <div class="product">
-          <img src="${p.imageUrl}" alt="${p.name}" onerror="this.src='https://placehold.co/400x300/e09393/ffffff?text=Image+Not+Found'">
-          <h3>${p.name}</h3>
-          <p>₹${p.price}</p>
-          <button class="btn" onclick="addToCart(${p.id})">Add to Cart</button>
-        </div>`;
-    });
-  }
-
-  function addToCart(id) {
-    const product = products.find(p => p.id === id);
-    cart.push(product);
-    renderCart();
-  }
-
-  function renderCart() {
-    const container = document.getElementById("cart-items");
-    if (cart.length === 0) {
-      container.innerHTML = "Cart is empty";
-      document.getElementById("total").textContent = 0;
-      return;
+    function renderProducts() {
+      const container = document.getElementById("products");
+      container.innerHTML = "";
+      products.forEach((p, index) => {
+        container.innerHTML += `
+          <div class="product" style="animation-delay: ${index * 0.1}s;">
+            <img src="${p.imageUrl}" alt="${p.name}" 
+              onerror="this.src='https://placehold.co/400x300/e09393/ffffff?text=Image+Not+Found'">
+            <h3>${p.name}</h3>
+            <p>₹${p.price}</p>
+            <button class="btn" onclick="addToCart(${p.id})">Add to Cart</button>
+          </div>`;
+      });
     }
-    container.innerHTML = cart.map(item => `<p>${item.name} - ₹${item.price}</p>`).join("");
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-    document.getElementById("total").textContent = total;
-  }
 
-  renderProducts();
-</script>
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      cart.push(product);
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById("cart-items");
+      if (cart.length === 0) {
+        container.innerHTML = "Cart is empty";
+        document.getElementById("total").textContent = 0;
+        return;
+      }
+      container.innerHTML = cart.map(item => `<p>${item.name} - ₹${item.price}</p>`).join("");
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      document.getElementById("total").textContent = total.toFixed(2);
+    }
+
+    renderProducts();
+  </script>
 
 </body>
 </html>
