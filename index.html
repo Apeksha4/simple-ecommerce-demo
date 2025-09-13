@@ -1,418 +1,71 @@
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ByteBazaar</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --color-pink: #e09393;
-            --color-peach: #fcebe8;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--color-peach);
-            color: #4b5563; /* Gray-600 */
-        }
-
-        /* Custom scrollbar for better aesthetics */
-        .cart-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .cart-scrollbar::-webkit-scrollbar-track {
-            background: #e2e8f0;
-            border-radius: 10px;
-        }
-
-        .cart-scrollbar::-webkit-scrollbar-thumb {
-            background: #94a3b8;
-            border-radius: 10px;
-        }
-
-        .cart-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
-        }
-
-        /* Keyframes for the buy button glow animation */
-        @keyframes buyButtonGlow {
-            0%, 100% {
-                box-shadow: 0 0 8px rgba(252, 235, 232, 0.6), 0 0 16px rgba(252, 235, 232, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 16px rgba(252, 235, 232, 0.8), 0 0 24px rgba(252, 235, 232, 0.6);
-            }
-        }
-        .buy-button-glow {
-            animation: buyButtonGlow 2s infinite alternate;
-        }
-
-        /* Style for the main container to match the soft, rounded design */
-        .main-container {
-            background-color: #ffffff;
-            border-radius: 3rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            max-width: 1200px;
-        }
-        
-        .hero-title {
-            color: var(--color-pink);
-            font-size: clamp(2rem, 5vw, 4rem);
-            font-weight: 700;
-        }
-        
-        .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: #9ca3af; /* Gray-400 */
-        }
-        
-        .circular-container {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 100%;
-        }
-
-        .circular-container img {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: cover;
-        }
-
-        .floating-bubble {
-            background-color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            position: absolute;
-            white-space: nowrap;
-            font-size: 0.875rem;
-            color: #4b5563;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Ecommerce</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    .product { border: 1px solid #ddd; border-radius: 10px; padding: 10px; margin: 10px; width: 200px; display: inline-block; vertical-align: top; text-align: center; background: #f8f8f8;}
+    .product img { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; }
+    .btn { background: black; color: white; padding: 6px 12px; border: none; border-radius: 6px; margin-top: 5px; cursor: pointer; }
+    .cart { background: #fff3cd; padding: 10px; border: 1px solid #ffeeba; margin: 10px; border-radius: 8px; }
+  </style>
 </head>
+<body>
 
-<body class="min-h-screen flex flex-col">
+  <h1 style="text-align:center;">🛒 Demo E-commerce</h1>
+  <div id="products"></div>
 
-    <!-- Main content wrapper to handle spacing and centering -->
-    <div class="flex-grow flex justify-center items-center p-4">
-        <!-- Main content container -->
-        <div class="w-full main-container p-6 sm:p-12 relative z-10">
+  <div class="cart">
+    <h2>Cart</h2>
+    <div id="cart-items">Cart is empty</div>
+    <p><b>Total: ₹<span id="total">0</span></b></p>
+  </div>
 
-            <!-- Header -->
-            <header class="flex flex-col sm:flex-row justify-between items-center mb-16">
-                <div class="flex items-center space-x-2 mb-4 sm:mb-0">
-                    <i class="fa-solid fa-house text-2xl" style="color: var(--color-pink);"></i>
-                    <span class="text-xl font-bold" style="color: var(--color-pink);">ByteBazaar</span>
-                </div>
-                <nav class="flex-grow flex justify-center space-x-6 text-gray-500 font-medium hidden md:flex">
-                    <a href="#" class="hover:text-gray-900 transition-colors">Home</a>
-                    <a href="#" class="hover:text-gray-900 transition-colors">Product</a>
-                    <a href="#" class="hover:text-gray-900 transition-colors">About</a>
-                    <a href="#" class="hover:text-gray-900 transition-colors">Contact</a>
-                </nav>
-                <div class="flex items-center space-x-4">
-                    <div class="relative hidden sm:block">
-                        <input type="text" placeholder="Type here" class="pl-4 pr-10 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-all text-sm">
-                        <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    </div>
-                    <a href="#" class="p-3 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition-colors"><i class="fa-solid fa-user"></i></a>
-                </div>
-            </header>
+<script>
+  const products = [
+    { id: 1, name: "Speaker", price: 1599, imageUrl: "https://images.unsplash.com/photo-1626084024523-2895f36e8971?q=80&w=400" },
+    { id: 2, name: "Headphones", price: 899, imageUrl: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=400" },
+    { id: 3, name: "Shoes", price: 1299, imageUrl: "https://images.unsplash.com/photo-1606813907291-773bbfc4b979?q=80&w=400" }
+  ];
 
-            <!-- Main Hero Section -->
-            <main class="grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-24 items-center">
-                <!-- Left side: Text & Buy button -->
-                <div class="order-2 md:order-1 text-center md:text-left">
-                    <h1 class="hero-title mb-2">e-commerce<br>Website</h1>
-                    <p class="hero-subtitle mb-8">SUPPORT LOCAL EVERYTHING</p>
-                    <div class="flex items-center justify-center md:justify-start mb-6 space-x-4">
-                        <label for="product-quantity" class="text-gray-500">Choose your</label>
-                        <div class="relative w-24">
-                            <input type="number" id="product-quantity" value="1" min="1" class="w-full text-center py-2 px-3 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                    </div>
-                    <button id="buy-now-btn" class="bg-gradient-to-r from-gray-200 to-gray-300 text-gray-800 font-semibold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 buy-button-glow">
-                        <i class="fa-solid fa-basket-shopping mr-2"></i> Buy Now
-                    </button>
-                </div>
+  let cart = [];
 
-                <!-- Right side: Product showcase -->
-                <div class="order-1 md:order-2 relative w-full aspect-square md:aspect-auto">
-                    <!-- Main circular product container -->
-                    <div class="relative w-full aspect-square rounded-full flex items-center justify-center" style="background-color: var(--color-peach);">
-                        <img id="main-product-image" src="https://images.unsplash.com/photo-1626084024523-2895f36e8971?q=80&w=400" alt="Minimalist speaker" class="w-2/3 h-2/3 object-contain">
-                    </div>
+  function renderProducts() {
+    const container = document.getElementById("products");
+    container.innerHTML = "";
+    products.forEach(p => {
+      container.innerHTML += `
+        <div class="product">
+          <img src="${p.imageUrl}" alt="${p.name}" onerror="this.src='https://placehold.co/400x300/e09393/ffffff?text=Image+Not+Found'">
+          <h3>${p.name}</h3>
+          <p>₹${p.price}</p>
+          <button class="btn" onclick="addToCart(${p.id})">Add to Cart</button>
+        </div>`;
+    });
+  }
 
-                    <!-- Floating Bubbles -->
-                    <div class="floating-bubble top-[10%] left-[60%] sm:top-[15%] sm:left-[70%]">Minimalist</div>
-                    <div class="floating-bubble bottom-[20%] left-[10%] sm:bottom-[25%] sm:left-[5%]">Modern design</div>
-                    
-                    <!-- Small floating images -->
-                    <div class="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden top-[2%] right-[5%] sm:top-[10%] sm:right-[-2%] border-4 border-white shadow-md">
-                        <img src="https://images.unsplash.com/photo-1583850162590-7d12f37c35e7?q=80&w=400" alt="Tech setup" class="w-full h-full object-cover">
-                    </div>
-                    <div class="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden top-[25%] right-[-10%] sm:top-[40%] sm:right-[-15%] border-4 border-white shadow-md">
-                        <img src="https://images.unsplash.com/photo-1520336688582-8959f2a96a1a?q=80&w=400" alt="Person wearing headphones" class="w-full h-full object-cover">
-                    </div>
-                </div>
-            </main>
-            
-            <hr class="my-16 border-gray-200" />
-            
-            <!-- Product list and Cart section (adapted from previous version) -->
-            <main class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-                <!-- Product List Section -->
-                <section class="md:col-span-2">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-semibold text-gray-800">Our Products 🛍️</h2>
-                        <div class="flex items-center space-x-2">
-                            <label for="sort-by" class="text-gray-600">Sort by:</label>
-                            <select id="sort-by" class="rounded-md border border-gray-300 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400">
-                                <option value="default">Default</option>
-                                <option value="price-low-high">Price: Low to High</option>
-                                <option value="price-high-low">Price: High to Low</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Products will be dynamically added here -->
-                    </div>
-                </section>
+  function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    cart.push(product);
+    renderCart();
+  }
 
-                <!-- Shopping Cart Section -->
-                <aside class="md:col-span-1 bg-gray-50 rounded-2xl shadow-inner p-6 flex flex-col h-full border border-gray-200">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Shopping Cart 🛒</h2>
-                    <!-- Cart items container with a fixed height and scrollbar for many items -->
-                    <div id="cart-items" class="space-y-4 mb-6 flex-grow overflow-y-auto cart-scrollbar pr-2">
-                        <p id="empty-cart-message" class="text-gray-500 italic text-center py-4">Your cart is empty.</p>
-                    </div>
-                    <div class="border-t pt-4 mt-auto border-gray-300">
-                        <div class="flex justify-between items-center font-bold text-xl text-gray-800">
-                            <span>Total:</span>
-                            <span id="cart-total">₹0.00</span>
-                        </div>
-                    </div>
-                    <button id="checkout-button"
-                        class="mt-6 w-full py-4 px-6 bg-gray-800 text-white font-bold rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                        Checkout ✅
-                    </button>
-                </aside>
-            </main>
-        </div>
+  function renderCart() {
+    const container = document.getElementById("cart-items");
+    if (cart.length === 0) {
+      container.innerHTML = "Cart is empty";
+      document.getElementById("total").textContent = 0;
+      return;
+    }
+    container.innerHTML = cart.map(item => `<p>${item.name} - ₹${item.price}</p>`).join("");
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    document.getElementById("total").textContent = total;
+  }
 
-        <!-- Message Box for alerts -->
-        <div id="message-box" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center p-4 z-50">
-            <div class="bg-white rounded-xl shadow-xl p-6 sm:p-8 w-full max-w-sm transform transition-transform duration-300 scale-95 opacity-0">
-                <div class="flex justify-between items-start mb-4">
-                    <h3 id="message-title" class="text-xl font-bold text-gray-800"></h3>
-                    <button id="close-message-box" class="text-gray-400 hover:text-gray-600 font-bold text-2xl">&times;</button>
-                </div>
-                <p id="message-content" class="text-gray-600 mb-6"></p>
-                <button id="ok-message-box"
-                    class="w-full py-3 px-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300">
-                    OK
-                </button>
-            </div>
-        </div>
-    </div>
+  renderProducts();
+</script>
 
-    <!-- Footer -->
-    <footer class="text-center text-gray-500 text-sm p-4">
-        <p>Designed by Apeksha Singh Chauhan</p>
-    </footer>
-
-    <script>
-        const products = [
-            { id: 1, name: "speaker", price: 159.99, imageUrl: "https://images.unsplash.com/photos/black-and-red-lg-portable-speaker-zxvnrxl5OXc?q=80&w=400" },
-            { id: 2, name: "headphones", price: 89.50, imageUrl: "https://unsplash.com/photos/a-pair-of-headphones-sitting-on-top-of-each-other-A6hzRnwR3vM?q=80&w=400" },
-            { id: 3, name: "shirt", price: 249.99, imageUrl: "https://unsplash.com/photos/man-in-white-dress-shirt-wearing-black-sunglasses-npyWFYpHQ94?q=80&w=400" },
-            { id: 4, name: "jeans", price: 75.00, imageUrl: "https://unsplash.com/photos/woman-in-white-tank-top-and-blue-denim-jeans-sitting-on-white-chair-2s3GhhJz2uY?q=80&w=400" },
-            { id: 5, name: "shoes", price: 390.99 , imageUrl:"https://unsplash.com/photos/pair-of-white-nike-high-top-shoes-SxAXphIPWeg?q=80&w=400" },
-            { id: 6, name: "backpack", price: 35.00, imageUrl: "https://unsplash.com/photos/a-backpack-tennis-shoes-and-an-apple-on-a-bed-EG7Z3r0PEmo?q=80&w=400" }
-        ];
-
-        let cart = [];
-
-        // DOM element references
-        const productListEl = document.getElementById('product-list');
-        const cartItemsEl = document.getElementById('cart-items');
-        const cartTotalEl = document.getElementById('cart-total');
-        const emptyCartMessageEl = document.getElementById('empty-cart-message');
-        const checkoutButtonEl = document.getElementById('checkout-button');
-        const messageBoxEl = document.getElementById('message-box');
-        const messageTitleEl = document.getElementById('message-title');
-        const messageContentEl = document.getElementById('message-content');
-        const closeMessageBoxButton = document.getElementById('close-message-box');
-        const okMessageBoxButton = document.getElementById('ok-message-box');
-        const sortByEl = document.getElementById('sort-by');
-        const buyNowBtn = document.getElementById('buy-now-btn');
-        const productQuantityInput = document.getElementById('product-quantity');
-
-        // Function to show a custom message box instead of alert()
-        function showMessage(title, message) {
-            messageTitleEl.textContent = title;
-            messageContentEl.textContent = message;
-            messageBoxEl.classList.remove('hidden');
-            messageBoxEl.classList.add('flex');
-
-            // Animate the message box for a smooth entry
-            const contentBox = messageBoxEl.querySelector('div');
-            setTimeout(() => {
-                contentBox.classList.remove('scale-95', 'opacity-0');
-                contentBox.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
-
-        // Function to hide the custom message box
-        function hideMessageBox() {
-            const contentBox = messageBoxEl.querySelector('div');
-            contentBox.classList.remove('scale-100', 'opacity-100');
-            contentBox.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                messageBoxEl.classList.remove('flex');
-                messageBoxEl.classList.add('hidden');
-            }, 300);
-        }
-
-        closeMessageBoxButton.addEventListener('click', hideMessageBox);
-        okMessageBoxButton.addEventListener('click', hideMessageBox);
-
-        function renderProducts(productsToRender = products) {
-            productListEl.innerHTML = '';
-            productsToRender.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.className = 'bg-gray-100 rounded-xl shadow-inner overflow-hidden transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg relative border border-gray-200';
-
-                productCard.innerHTML = `
-                    <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-48 object-cover rounded-t-xl" onerror="this.onerror=null;this.src='https://placehold.co/400x300/e09393/ffffff?text=Image+Not+Found';">
-                    <div class="p-4">
-                        <h3 class="font-semibold text-lg text-gray-800 mb-1">${product.name}</h3>
-                        <p class="text-pink-600 font-bold text-xl" style="color: var(--color-pink);">₹${product.price.toFixed(2)}</p>
-                        <button data-id="${product.id}"
-                            class="mt-4 w-full py-2 px-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300 add-to-cart-btn">
-                            Add to Cart ➕
-                        </button>
-                    </div>
-                `;
-                productListEl.appendChild(productCard);
-            });
-        }
-
-        function renderCart() {
-            cartItemsEl.innerHTML = '';
-            if (cart.length === 0) {
-                emptyCartMessageEl.style.display = 'block';
-                checkoutButtonEl.disabled = true;
-            } else {
-                emptyCartMessageEl.style.display = 'none';
-                checkoutButtonEl.disabled = false;
-                cart.forEach(item => {
-                    const cartItem = document.createElement('div');
-                    cartItem.className = 'flex items-center justify-between bg-white rounded-md p-3 shadow-sm border border-gray-200 fade-in-down transition-transform duration-200 hover:scale-[1.02] cursor-pointer';
-                    cartItem.innerHTML = `
-                        <div class="flex-grow">
-                            <p class="font-medium text-gray-800">🛍️ ${item.name}</p>
-                            <p class="text-sm text-gray-500">${item.quantity} x ₹${item.price.toFixed(2)}</p>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="font-bold text-gray-700">₹${(item.price * item.quantity).toFixed(2)}</span>
-                            <button data-id="${item.id}" class="remove-btn">
-                                🗑️
-                            </button>
-                        </div>
-                    `;
-                    cartItemsEl.appendChild(cartItem);
-                });
-            }
-            updateTotal();
-        }
-
-        function updateTotal() {
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            cartTotalEl.textContent = `₹${total.toFixed(2)}`;
-        }
-
-        function addToCart(productId, quantity) {
-            const productToAdd = products.find(p => p.id === productId);
-            if (!productToAdd) return;
-
-            const existingItem = cart.find(item => item.id === productId);
-            if (existingItem) {
-                existingItem.quantity += quantity;
-            } else {
-                cart.push({ ...productToAdd, quantity });
-            }
-            renderCart();
-            showMessage('Item(s) Added ℹ️', `${quantity} x ${productToAdd.name} added to cart.`);
-        }
-
-        productListEl.addEventListener('click', (event) => {
-            if (event.target.classList.contains('add-to-cart-btn')) {
-                const productId = parseInt(event.target.dataset.id);
-                addToCart(productId, 1);
-            }
-        });
-
-        cartItemsEl.addEventListener('click', (event) => {
-            if (event.target.classList.contains('remove-btn')) {
-                const productId = parseInt(event.target.dataset.id);
-                const itemIndex = cart.findIndex(item => item.id === productId);
-                
-                if (itemIndex > -1) {
-                    const itemToRemove = cart[itemIndex];
-                    if (itemToRemove.quantity > 1) {
-                        itemToRemove.quantity--;
-                    } else {
-                        cart.splice(itemIndex, 1);
-                    }
-                    renderCart();
-                    showMessage('Item Removed 🗑️', `${itemToRemove.name} has been removed from your cart.`);
-                }
-            }
-        });
-
-        buyNowBtn.addEventListener('click', () => {
-            const quantity = parseInt(productQuantityInput.value) || 1;
-            addToCart(1, quantity); // Add the featured product (id 1)
-        });
-
-        checkoutButtonEl.addEventListener('click', () => {
-            if (cart.length > 0) {
-                showMessage('Checkout Successful 🎉', 'Your order has been placed successfully!');
-                cart = [];
-                renderCart();
-            }
-        });
-
-        function sortProducts(sortType) {
-            const sortedProducts = [...products];
-            if (sortType === 'price-low-high') {
-                sortedProducts.sort((a, b) => a.price - b.price);
-            } else if (sortType === 'price-high-low') {
-                sortedProducts.sort((a, b) => b.price - a.price);
-            }
-            renderProducts(sortedProducts);
-        }
-        
-        sortByEl.addEventListener('change', (event) => {
-            sortProducts(event.target.value);
-        });
-
-        // Initial render of products and cart on page load
-        renderProducts();
-        renderCart();
-    </script>
 </body>
 </html>
-
-        
