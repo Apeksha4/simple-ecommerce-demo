@@ -1,26 +1,127 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TrendyStore - Demo E-Commerce</title>
   <style>
+    :root {
+      --bg: #f7f7f7;
+      --text: #000;
+      --card: #fff;
+      --shadow: rgba(0,0,0,0.1);
+      --accent: #ff4b2b;
+    }
+
+    body.dark {
+      --bg: #121212;
+      --text: #fff;
+      --card: #1e1e1e;
+      --shadow: rgba(255,255,255,0.1);
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #f7f7f7, #ececec);
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
     }
 
     header {
-      background: #000;
-      color: #fff;
+      background: var(--text);
+      color: var(--bg);
       text-align: center;
       padding: 15px;
       font-size: 1.8rem;
       font-weight: bold;
       letter-spacing: 1px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       animation: fadeDown 0.8s ease;
+    }
+
+    header button {
+      background: var(--bg);
+      color: var(--text);
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s ease;
+    }
+
+    header button:hover {
+      transform: scale(1.05);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      background: linear-gradient(135deg, #ff4b2b, #ff416c);
+      color: white;
+      padding: 60px 20px;
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+      animation: fadeDown 1s ease;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      animation: slideUp 1s ease forwards;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin-top: 10px;
+      opacity: 0.9;
+    }
+
+    /* Search + Filter Section */
+    .filters {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px auto;
+      max-width: 900px;
+      padding: 0 10px;
+    }
+
+    .filters input {
+      padding: 10px 14px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      width: 200px;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .filters input:focus {
+      width: 260px;
+      border-color: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .filter-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s ease, background 0.3s;
+    }
+
+    .filter-btn:hover {
+      transform: scale(1.1);
+      background: #ff1e54;
     }
 
     #products {
@@ -33,12 +134,12 @@
     }
 
     .product {
-      background: #fff;
+      background: var(--card);
       border-radius: 15px;
       padding: 15px;
       text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 12px var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s;
       opacity: 0;
       transform: translateY(20px);
       animation: fadeInUp 0.6s ease forwards;
@@ -55,7 +156,7 @@
 
     .product:hover {
       transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      box-shadow: 0 6px 18px var(--shadow);
     }
 
     .product:hover img {
@@ -70,12 +171,11 @@
     p {
       margin: 5px 0;
       font-weight: bold;
-      color: #333;
     }
 
     .btn {
-      background: #000;
-      color: white;
+      background: var(--text);
+      color: var(--bg);
       padding: 10px 14px;
       border: none;
       border-radius: 8px;
@@ -90,14 +190,41 @@
       transform: scale(1.05);
     }
 
-    .cart {
-      background: #fff;
+    /* Cart Drawer */
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 320px;
+      height: 100%;
+      background: var(--card);
+      box-shadow: -4px 0 12px var(--shadow);
+      transition: right 0.4s ease;
       padding: 20px;
-      margin: 30px auto;
-      max-width: 500px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      animation: fadeIn 0.8s ease;
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+    }
+
+    .cart-drawer.open {
+      right: 0;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .close-btn {
+      cursor: pointer;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--text);
     }
 
     /* Toast Notification */
@@ -125,6 +252,11 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
+    @keyframes slideUp {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
     @keyframes toastSlide {
       0% { opacity: 0; transform: translateY(-20px); }
       30% { opacity: 1; transform: translateY(0); }
@@ -135,12 +267,36 @@
 </head>
 <body>
 
-  <header>🛒 TrendyStore</header>
+  <header>
+    🛒 TrendyStore
+    <div>
+      <button onclick="toggleDarkMode()">🌙 Dark</button>
+      <button onclick="toggleCart()">🛍️ Cart</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Welcome to TrendyStore</h1>
+    <p>Shop the latest gadgets, fashion & more – with smooth animations 😉</p>
+  </section>
+
+  <!-- Search + Filter -->
+  <div class="filters">
+    <input type="text" id="search" placeholder="Search product..." onkeyup="filterProducts()">
+    <button class="filter-btn" onclick="filterCategory('all')">All</button>
+    <button class="filter-btn" onclick="filterCategory('fashion')">Fashion</button>
+    <button class="filter-btn" onclick="filterCategory('electronics')">Electronics</button>
+  </div>
 
   <div id="products"></div>
 
-  <div class="cart">
-    <h2>Your Cart</h2>
+  <!-- Cart Drawer -->
+  <div id="cartDrawer" class="cart-drawer">
+    <div class="cart-header">
+      <span>Your Cart</span>
+      <button class="close-btn" onclick="toggleCart()">✖</button>
+    </div>
     <div id="cart-items">Cart is empty</div>
     <p><b>Total: ₹<span id="total">0</span></b></p>
   </div>
@@ -149,22 +305,28 @@
 
   <script>
     const products = [  
-        { id: 1, name: "Bluetooth Speaker", price: 1599, imageUrl: "https://images.unsplash.com/photo-1626084024523-2895f36e8971?q=80&w=600" },  
-        { id: 2, name: "Wireless Headphones", price: 2499, imageUrl: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600" },  
-        { id: 3, name: "Classic White Shirt", price: 799, imageUrl: "https://images.unsplash.com/photo-1520975922071-a24e76d128b0?q=80&w=600" },  
-        { id: 4, name: "Blue Denim Jeans", price: 1199, imageUrl: "https://images.unsplash.com/photo-1602293589930-45aadcb2a4b0?q=80&w=600" },  
-        { id: 5, name: "Running Sneakers", price: 2899 , imageUrl: "https://images.unsplash.com/photo-1606813907291-773bbfc4b979?q=80&w=600" },  
-        { id: 6, name: "Travel Backpack", price: 1599, imageUrl: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=600" },
-        { id: 7, name: "Smartwatch", price: 4999, imageUrl: "https://images.unsplash.com/photo-1516728778615-2d590ea1856f?q=80&w=600" },
-        { id: 8, name: "Designer Sunglasses", price: 1999, imageUrl: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=600" }
+        { id: 1, name: "Bluetooth Speaker", price: 1599, category:"electronics", imageUrl: "https://images.unsplash.com/photo-1626084024523-2895f36e8971?q=80&w=600" },  
+        { id: 2, name: "Wireless Headphones", price: 2499, category:"electronics", imageUrl: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600" },  
+        { id: 3, name: "Classic White Shirt", price: 799, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1520975922071-a24e76d128b0?q=80&w=600" },  
+        { id: 4, name: "Blue Denim Jeans", price: 1199, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1602293589930-45aadcb2a4b0?q=80&w=600" },  
+        { id: 5, name: "Running Sneakers", price: 2899, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1606813907291-773bbfc4b979?q=80&w=600" },  
+        { id: 6, name: "Travel Backpack", price: 1599, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=600" },
+        { id: 7, name: "Smartwatch", price: 4999, category:"electronics", imageUrl: "https://images.unsplash.com/photo-1516728778615-2d590ea1856f?q=80&w=600" },
+        { id: 8, name: "Designer Sunglasses", price: 1999, category:"fashion", imageUrl: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=600" }
     ];
 
     let cart = [];
+    let activeCategory = "all";
 
     function renderProducts() {
       const container = document.getElementById("products");
       container.innerHTML = "";
-      products.forEach((p, index) => {
+      const searchValue = document.getElementById("search").value.toLowerCase();
+      
+      products
+        .filter(p => (activeCategory === "all" || p.category === activeCategory))
+        .filter(p => p.name.toLowerCase().includes(searchValue))
+        .forEach((p, index) => {
         container.innerHTML += `
           <div class="product" style="animation-delay: ${index * 0.1}s;">
             <img src="${p.imageUrl}" alt="${p.name}" 
@@ -199,6 +361,23 @@
       const toast = document.getElementById("toast");
       toast.style.display = "block";
       setTimeout(() => { toast.style.display = "none"; }, 2500);
+    }
+
+    function toggleCart() {
+      document.getElementById("cartDrawer").classList.toggle("open");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+    }
+
+    function filterCategory(cat) {
+      activeCategory = cat;
+      renderProducts();
+    }
+
+    function filterProducts() {
+      renderProducts();
     }
 
     renderProducts();
