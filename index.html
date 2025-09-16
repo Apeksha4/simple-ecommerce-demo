@@ -11,7 +11,6 @@
   --card: #fff;
   --shadow: rgba(0,0,0,0.1);
   --accent: #ff4b2b;
-  --success: #28a745;
 }
 
 body.dark {
@@ -226,22 +225,6 @@ header button:hover {
   margin-top: 10px;
 }
 
-/* Custom Message Box */
-.message-box {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: var(--success);
-  color: white;
-  padding: 15px 25px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  display: none;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-  z-index: 3000;
-}
-
 footer {
   text-align: center;
   padding: 20px;
@@ -292,23 +275,20 @@ footer {
   </div>
 </div>
 
-<!-- Custom Message Box -->
-<div id="messageBox" class="message-box"></div>
-
 <footer>
   Designed by Apeksha Singh Chauhan 💻
 </footer>
 
 <script>
 const products=[
-  {id:1,name:"Bluetooth Speaker",price:1599,category:"electronics",imageUrl:"https://images.pexels.com/photos/277394/pexels-photo-277394.jpeg"},
-  {id:2,name:"Trouser",price:2499,category:"fashion",imageUrl:"https://placehold.co/400x300/e0e0e0/333333?text=Trouser"},
-  {id:3,name:"Classic White Shirt",price:799,category:"fashion",imageUrl:"https://placehold.co/400x300/e0e0e0/333333?text=Shirt"},
-  {id:4,name:"Blue Denim Jeans",price:1199,category:"fashion",imageUrl:"https://placehold.co/400x300/e0e0e0/333333?text=Jeans"},
-  {id:5,name:"Running Sneakers",price:2899,category:"fashion",imageUrl:"https://placehold.co/400x300/e0e0e0/333333?text=Sneakers"},
-  {id:6,name:"Makeup Brushes",price:1599,category:"fashion",imageUrl:"https://placehold.co/400x300/e0e0e0/333333?text=Brushes"},
-  {id:7,name:"Smartwatch",price:4999,category:"electronics",imageUrl:"https://placehold.co/400x300/e0e0e0/333333?text=Watch"},
-  {id:8,name:"Shoes",price:1999,category:"fashion",imageUrl:"https://placehold.co/400x300/e0e0e0/333333?text=Shoes"}
+  {id:1,name:"Bluetooth Speaker",price:1599,category:"electronics",imageUrl:"images/speaker.jpg"},
+  {id:2,name:"Trouser",price:2499,category:"fashion",imageUrl:"images/trouser.jpg"},
+  {id:3,name:"Classic White Shirt",price:799,category:"fashion",imageUrl:"images/shirt.jpg"},
+  {id:4,name:"Blue Denim Jeans",price:1199,category:"fashion",imageUrl:"images/jeans.jpg"},
+  {id:5,name:"Running Sneakers",price:2899,category:"fashion",imageUrl:"images/sneakers.jpg"},
+  {id:6,name:"Makeup Brushes",price:1599,category:"fashion",imageUrl:"images/brushes.jpg"},
+  {id:7,name:"Smartwatch",price:4999,category:"electronics",imageUrl:"images/watch.jpg"},
+  {id:8,name:"Shoes",price:1999,category:"fashion",imageUrl:"images/shoes.jpg"}
 ];
 
 let cart=[];
@@ -324,7 +304,7 @@ function renderProducts(){
   .forEach((p,index)=>{
     const div=document.createElement("div");
     div.className="product";
-    div.style.animationDelay=${index*0.1}s;
+    div.style.animationDelay=`${index*0.1}s`;
     div.innerHTML=`<div class="product-inner" onclick="openModal(${p.id})">
       <div class="product-front">
         <img src="${p.imageUrl}" alt="${p.name}" onerror="this.src='https://placehold.co/400x300?text=No+Image'">
@@ -340,7 +320,7 @@ function openModal(id){
   selectedProduct=products.find(p=>p.id===id);
   document.getElementById("modalImg").src=selectedProduct.imageUrl;
   document.getElementById("modalName").textContent=selectedProduct.name;
-  document.getElementById("modalPrice").textContent=₹${selectedProduct.price};
+  document.getElementById("modalPrice").textContent=`₹${selectedProduct.price}`;
   document.getElementById("productModal").style.display="flex";
 }
 
@@ -348,22 +328,11 @@ function closeModal(){
   document.getElementById("productModal").style.display="none";
 }
 
-function showMessageBox(message){
-  const messageBox=document.getElementById("messageBox");
-  messageBox.textContent=message;
-  messageBox.style.display="block";
-  messageBox.style.opacity=1;
-  setTimeout(()=>{
-    messageBox.style.opacity=0;
-    setTimeout(()=>messageBox.style.display="none",500);
-  },3000);
-}
-
 function addToCart(id){
   const product=products.find(p=>p.id===id);
   cart.push(product);
   closeModal();
-  showMessageBox(${product.name} added to cart!);
+  alert(`${product.name} added to cart!`);
 }
 
 function toggleDarkMode(){document.body.classList.toggle("dark");}
